@@ -1,6 +1,8 @@
+import pendulum
+import orjson
 #!/usr/bin/env python3
 """
-OSA Enhanced Features - Extensions beyond Claude Code
+MemCore Enhanced Features - Extensions beyond Claude Code
 """
 
 import os
@@ -11,7 +13,7 @@ from typing import Dict, List, Any, Optional
 from datetime import datetime
 import asyncio
 
-class OSAEnhancedFeatures:
+class MemCoreEnhancedFeatures:
     """Enhanced features that go beyond Claude Code."""
     
     def __init__(self, osa_instance):
@@ -146,7 +148,7 @@ Provide:
         for folder in template["structure"]:
             (project_dir / folder).mkdir(exist_ok=True)
         
-        # Generate files with OSA
+        # Generate files with MemCore
         for file in template["files"]:
             prompt = f"Generate content for {file} in a {project_type} project named {name}"
             content = await self.osa.accomplish_task(prompt)
@@ -227,7 +229,7 @@ Identify:
         
         # Store in learning notes
         learning_entry = {
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": pendulum.now().isoformat(),
             "code_sample": code[:200],
             "learnings": analysis
         }
@@ -268,7 +270,7 @@ Provide specific fixes for any issues found."""
         self.code_snippets[name] = {
             "code": code,
             "language": language,
-            "saved_at": datetime.now().isoformat()
+            "saved_at": pendulum.now().isoformat()
         }
         
         # Persist to file

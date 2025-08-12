@@ -1,10 +1,10 @@
 """
 OmniMind Core Module
 
-Contains the main OSA class and core functionality.
+Contains the main MemCore class and core functionality.
 """
 
-from .osa_minimal import OSACompleteFinal
-from .logger import setup_logger, OSALogger
+from .osa_minimal import MemCoreCompleteFinal
+from loguru import logger
 
-__all__ = ["OSACompleteFinal", "setup_logger", "OSALogger"]
+__all__ = ["MemCoreCompleteFinal", "setup_logger", "MemCoreLogger"]

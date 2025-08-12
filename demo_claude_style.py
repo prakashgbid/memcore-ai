@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Demo of OSA's Claude Code-style interface
+Demo of MemCore's Claude Code-style interface
 Shows the beautiful terminal formatting and autonomous features
 """
 
@@ -18,9 +18,9 @@ class Colors:
 
 def print_demo():
     print("\n" + "="*80)
-    print("OSA CLAUDE CODE-STYLE INTERFACE DEMO")
+    print("MemCore CLAUDE CODE-STYLE INTERFACE DEMO")
     print("="*80)
-    print("\nThis demo shows OSA's beautiful terminal interface inspired by Claude Code.\n")
+    print("\nThis demo shows MemCore's beautiful terminal interface inspired by Claude Code.\n")
     
     # Demo 1: Code Generation
     print("─" * 80)
@@ -36,7 +36,7 @@ def print_demo():
     time.sleep(0.5)
     
     # Thinking
-    print(f"\n{Colors.YELLOW}✻{Colors.RESET} {Colors.DIM}OSA is analyzing your request...{Colors.RESET}")
+    print(f"\n{Colors.YELLOW}✻{Colors.RESET} {Colors.DIM}MemCore is analyzing your request...{Colors.RESET}")
     
     time.sleep(1)
     
@@ -125,7 +125,7 @@ def print_demo():
     print("✅ Automatic intent detection - no manual modes!")
     
     print("\n" + "="*80)
-    print("OSA: Professional AI assistance with Claude Code elegance!")
+    print("MemCore: Professional AI assistance with Claude Code elegance!")
     print("="*80 + "\n")
 
 if __name__ == "__main__":

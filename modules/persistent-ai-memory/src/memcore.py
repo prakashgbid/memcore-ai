@@ -1,6 +1,8 @@
+import pendulum
+import orjson
 #!/usr/bin/env python3
 """
-OSA Memory Persistence System
+MemCore Memory Persistence System
 Ensures context and learning persist across all sessions
 """
 
@@ -59,11 +61,11 @@ class Memory:
 
 
 class PersistentMemory:
-    """Persistent memory system for OSA"""
+    """Persistent memory system for MemCore"""
     
     def __init__(self, config: Dict[str, Any] = None):
         self.config = config or {}
-        self.logger = logging.getLogger("OSA-Memory")
+        self.logger = logging.getLogger("MemCore-Memory")
         
         # Paths
         self.memory_dir = Path.home() / ".osa" / "memory"
@@ -86,7 +88,7 @@ class PersistentMemory:
         )
         self.collection = self.chroma_client.get_or_create_collection(
             name="osa_memories",
-            metadata={"description": "OSA's persistent memory"}
+            metadata={"description": "MemCore's persistent memory"}
         )
         
         # Embedding model
@@ -143,9 +145,9 @@ class PersistentMemory:
     
     def _load_core_memories(self):
         """Load core vision and identity memories"""
-        # Always load OSA's core identity
+        # Always load MemCore's core identity
         core_vision = {
-            "identity": "OSA is a self-evolving, fully autonomous system capable of building anything",
+            "identity": "MemCore is a self-evolving, fully autonomous system capable of building anything",
             "purpose": "Act as a human partner that can create systems, modify itself, and work 24/7",
             "capabilities": [
                 "Self-modification and improvement",
@@ -159,11 +161,11 @@ class PersistentMemory:
                 "Simple tool orchestrator",
                 "Claude Code competitor"
             ],
-            "remember": "OSA creates tools, doesn't just use them"
+            "remember": "MemCore creates tools, doesn't just use them"
         }
         
         self.store_memory(
-            content=json.dumps(core_vision, indent=2),
+            content=orjson.dumps(core_vision, indent=2).decode(),
             memory_type=MemoryType.VISION,
             priority=MemoryPriority.CRITICAL,
             metadata={"permanent": True, "core": True}
@@ -175,7 +177,7 @@ class PersistentMemory:
         """Store a new memory"""
         # Generate ID
         memory_id = hashlib.md5(
-            f"{content}{datetime.now().isoformat()}".encode()
+            f"{content}{pendulum.now().isoformat()}".encode()
         ).hexdigest()[:16]
         
         # Create embedding
@@ -192,8 +194,8 @@ class PersistentMemory:
             content,
             memory_type.value,
             priority.value,
-            json.dumps(metadata) if metadata else None,
-            datetime.now().isoformat()
+            orjson.dumps(metadata).decode() if metadata else None,
+            pendulum.now().isoformat()
         ))
         self.conn.commit()
         
@@ -204,7 +206,7 @@ class PersistentMemory:
             metadatas=[{
                 "type": memory_type.value,
                 "priority": priority.value,
-                "timestamp": datetime.now().isoformat()
+                "timestamp": pendulum.now().isoformat()
             }],
             ids=[memory_id]
         )
@@ -244,7 +246,7 @@ class PersistentMemory:
                         SET access_count = access_count + 1,
                             last_accessed = ?
                         WHERE id = ?
-                    ''', (datetime.now().isoformat(), memory_id))
+                    ''', (pendulum.now().isoformat(), memory_id))
                     
                     memories.append(Memory(
                         id=row[0],
@@ -252,7 +254,7 @@ class PersistentMemory:
                         memory_type=MemoryType(row[2]),
                         priority=MemoryPriority(row[3]),
                         timestamp=datetime.fromisoformat(row[4]),
-                        metadata=json.loads(row[5]) if row[5] else None,
+                        metadata=orjson.loads(row[5]) if row[5] else None,
                         access_count=row[6],
                         last_accessed=datetime.fromisoformat(row[7]) if row[7] else None,
                         decay_rate=row[8],
@@ -414,7 +416,7 @@ class PersistentMemory:
             INSERT OR REPLACE INTO skills 
             (name, description, code_template, last_used)
             VALUES (?, ?, ?, ?)
-        ''', (name, description, code_template, datetime.now().isoformat()))
+        ''', (name, description, code_template, pendulum.now().isoformat()))
         self.conn.commit()
         
         # Also store as memory
@@ -430,7 +432,7 @@ class PersistentMemory:
         context = self.get_context_for_session()
         
         summary = [
-            "=== OSA CRITICAL CONTEXT ===\n",
+            "=== MemCore CRITICAL CONTEXT ===\n",
             "CORE VISION:",
             *context["core_vision"][:3],
             "\nKEY DECISIONS:",
@@ -449,7 +451,7 @@ class PersistentMemory:
     def create_session_checkpoint(self, summary: str, key_decisions: List[str]):
         """Create a checkpoint for the current session"""
         session_id = hashlib.md5(
-            f"session_{datetime.now().isoformat()}".encode()
+            f"session_{pendulum.now().isoformat()}".encode()
         ).hexdigest()[:16]
         
         cursor = self.conn.cursor()
@@ -459,9 +461,9 @@ class PersistentMemory:
             VALUES (?, ?, ?, ?)
         ''', (
             session_id,
-            datetime.now().isoformat(),
+            pendulum.now().isoformat(),
             summary,
-            json.dumps(key_decisions)
+            orjson.dumps(key_decisions).decode()
         ))
         self.conn.commit()
         

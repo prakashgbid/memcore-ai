@@ -1,7 +1,8 @@
+import pendulum
 #!/usr/bin/env python3
 """
-OSA Metrics and Performance Tracking System
-Provides transparency into OSA's operations
+MemCore Metrics and Performance Tracking System
+Provides transparency into MemCore's operations
 """
 
 import time
@@ -92,7 +93,7 @@ class SystemMetrics:
 
 
 class MetricsTracker:
-    """Central metrics tracking system for OSA"""
+    """Central metrics tracking system for MemCore"""
     
     def __init__(self, history_size: int = 100):
         self.current_response = ResponseMetrics()
@@ -150,7 +151,7 @@ class MetricsTracker:
         """Track a new skill learned"""
         entry = {
             "skill": skill,
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": pendulum.now().isoformat(),
             "responses_since": self.total_responses
         }
         self.skills_learned.append(entry)
@@ -159,7 +160,7 @@ class MetricsTracker:
         """Track new knowledge acquired"""
         entry = {
             "knowledge": knowledge,
-            "timestamp": datetime.now().isoformat()
+            "timestamp": pendulum.now().isoformat()
         }
         self.knowledge_acquired.append(entry)
     
@@ -167,7 +168,7 @@ class MetricsTracker:
         """Track a recognized pattern"""
         entry = {
             "pattern": pattern,
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": pendulum.now().isoformat(),
             "occurrences": 1
         }
         
@@ -241,7 +242,7 @@ class MetricsTracker:
         
         status = []
         status.append("═" * 60)
-        status.append("📊 OSA Performance Metrics")
+        status.append("📊 MemCore Performance Metrics")
         status.append("═" * 60)
         
         # Session stats

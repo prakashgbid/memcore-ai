@@ -1,8 +1,10 @@
+import pendulum
+import orjson
 #!/usr/bin/env python3
 """
-OSA Continuous Learning System
+MemCore Continuous Learning System
 
-This component enables OSA to:
+This component enables MemCore to:
 1. Learn from user interactions and feedback
 2. Conduct internal research and debates
 3. Avoid repetition through pattern recognition
@@ -16,7 +18,6 @@ Core Philosophy:
 """
 
 import asyncio
-import json
 import hashlib
 from typing import Dict, List, Optional, Any, Tuple
 from datetime import datetime, timedelta
@@ -99,7 +100,7 @@ class InternalDebate:
 
 class ContinuousLearningSystem:
     """
-    OSA's continuous learning component that enables:
+    MemCore's continuous learning component that enables:
     - Learning from user feedback
     - Internal research and debates
     - Pattern recognition to avoid repetition
@@ -131,7 +132,7 @@ class ContinuousLearningSystem:
         self.tool_evaluations: Dict[str, float] = {}
         
         # Setup logging
-        self.logger = logging.getLogger('OSA-Learning')
+        self.logger = logging.getLogger('MemCore-Learning')
         
         # Initialize knowledge base
         self._initialize_knowledge_base()
@@ -180,12 +181,12 @@ class ContinuousLearningSystem:
             return None
         
         learning = Learning(
-            id=hashlib.md5(f"{learning_content}{datetime.now()}".encode()).hexdigest()[:8],
+            id=hashlib.md5(f"{learning_content}{pendulum.now()}".encode()).hexdigest()[:8],
             type=LearningType.USER_FEEDBACK,
             content=learning_content,
             source=interaction.get('source', 'user_interaction'),
             confidence=self._calculate_confidence(interaction),
-            timestamp=datetime.now()
+            timestamp=pendulum.now()
         )
         
         # Store learning
@@ -347,14 +348,14 @@ class ContinuousLearningSystem:
         self.logger.info(f"🤔 Starting internal debate on: {topic}")
         
         debate = InternalDebate(
-            id=hashlib.md5(f"{topic}{datetime.now()}".encode()).hexdigest()[:8],
+            id=hashlib.md5(f"{topic}{pendulum.now()}".encode()).hexdigest()[:8],
             topic=topic,
             options=[{'name': opt, 'score': 0} for opt in options],
             arguments_for=defaultdict(list),
             arguments_against=defaultdict(list),
             conclusion=None,
             winner=None,
-            timestamp=datetime.now()
+            timestamp=pendulum.now()
         )
         
         # Generate arguments for each option
@@ -797,16 +798,16 @@ Decision: Proceed with {winner} approach.
         return summary
 
 
-# Integration functions for OSA
+# Integration functions for MemCore
 async def enhance_osa_with_learning(osa_instance):
-    """Enhance OSA instance with continuous learning"""
+    """Enhance MemCore instance with continuous learning"""
     
     learning_system = ContinuousLearningSystem()
     
-    # Add learning system to OSA
+    # Add learning system to MemCore
     osa_instance.learning_system = learning_system
     
-    # Override OSA methods to include learning
+    # Override MemCore methods to include learning
     original_accomplish = osa_instance.accomplish
     
     async def enhanced_accomplish(goal: str) -> Dict[str, Any]:

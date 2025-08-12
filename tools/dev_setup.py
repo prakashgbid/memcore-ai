@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Development environment setup script for OSA project.
+Development environment setup script for MemCore project.
 
 This script automates the setup of development tools, pre-commit hooks,
 and other quality assurance tools.
@@ -22,7 +22,7 @@ class DevEnvironmentSetup:
         
     def setup(self) -> None:
         """Run complete development environment setup."""
-        print("🚀 Setting up OSA development environment...")
+        print("🚀 Setting up MemCore development environment...")
         print(f"📁 Project root: {self.project_root}")
         
         steps = [
@@ -298,7 +298,7 @@ echo "✅ Security scan complete!"
         return '''#!/bin/bash
 set -e
 
-echo "🚀 Starting OSA development environment..."
+echo "🚀 Starting MemCore development environment..."
 
 # Start WebSocket logger in background
 echo "📡 Starting WebSocket logger..."
@@ -310,8 +310,8 @@ echo "🌐 Starting web interface..."
 cd web && python -m http.server 8080 &
 WEB_PID=$!
 
-# Start main OSA
-echo "🧠 Starting OSA..."
+# Start main MemCore
+echo "🧠 Starting MemCore..."
 python run_complete_osa.py
 
 # Cleanup on exit
@@ -323,7 +323,7 @@ def main():
     """Main entry point."""
     import argparse
     
-    parser = argparse.ArgumentParser(description="Setup OSA development environment")
+    parser = argparse.ArgumentParser(description="Setup MemCore development environment")
     parser.add_argument("--project-root", default=".", help="Project root directory")
     args = parser.parse_args()
     

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Quick fix to make OSA work immediately
+Quick fix to make MemCore work immediately
 """
 
 import subprocess
@@ -30,10 +30,10 @@ except Exception as e:
 import os
 os.chdir('/Users/MAC/Documents/projects/omnimind')
 
-# Create a simpler OSA launcher
+# Create a simpler MemCore launcher
 with open('osa_working.py', 'w') as f:
     f.write('''#!/usr/bin/env python3
-"""Working OSA with fixed model detection"""
+"""Working MemCore with fixed model detection"""
 
 import asyncio
 import ollama
@@ -43,7 +43,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
 async def main():
-    print("🚀 OSA Quick Start")
+    print("🚀 MemCore Quick Start")
     print("=" * 50)
     
     # Initialize Ollama client
@@ -90,5 +90,5 @@ if __name__ == "__main__":
 ''')
 
 print("\n✅ Created osa_working.py")
-print("\nTo run the working OSA:")
+print("\nTo run the working MemCore:")
 print("  python3 osa_working.py")

@@ -1,12 +1,13 @@
+import pendulum
+import orjson
 #!/usr/bin/env python3
 """
-OSA Multi-LLM Orchestrator
+MemCore Multi-LLM Orchestrator
 Intelligently routes queries to the best AI model for the task
 """
 
 import os
 import asyncio
-import json
 from typing import Dict, Any, Optional, List, Tuple
 from enum import Enum
 from dataclasses import dataclass
@@ -221,7 +222,7 @@ class LLMOrchestrator:
         
         metadata = {
             "model": model_name,
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": pendulum.now().isoformat(),
             "tokens_used": 0,
             "cost": 0.0,
             "latency": 0.0

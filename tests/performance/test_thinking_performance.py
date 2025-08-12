@@ -1,5 +1,5 @@
 """
-Performance tests for OSA thinking engine and related components.
+Performance tests for MemCore thinking engine and related components.
 """
 
 import pytest

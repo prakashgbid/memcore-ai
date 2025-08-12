@@ -12,7 +12,7 @@ from pathlib import Path
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
-from core.osa_minimal import OSACompleteFinal
+from core.osa_minimal import MemCoreCompleteFinal
 from core.logger import setup_logger
 
 # Setup logger
@@ -52,7 +52,7 @@ async def main():
     
     args = parser.parse_args()
     
-    # Initialize OSA
+    # Initialize MemCore
     logger.info("Initializing OmniMind Super Agent...")
     
     config = {
@@ -62,9 +62,9 @@ async def main():
         "verbose": args.verbose
     }
     
-    osa = OSACompleteFinal(config)
+    osa = MemCoreCompleteFinal(config)
     
-    # Start OSA
+    # Start MemCore
     await osa.initialize()
     
     if args.task:

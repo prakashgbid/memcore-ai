@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-OSA Command Approval System
+MemCore Command Approval System
 Interactive command approval with countdown timer like Claude Code
 """
 

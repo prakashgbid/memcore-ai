@@ -1,0 +1,239 @@
+[
+  {
+    "name": "action-hooks",
+    "path": "/Users/MAC/Documents/projects/omnimind/src/core/action_hooks.py",
+    "description": "Manages action hooks and notifications",
+    "files": [
+      "/Users/MAC/Documents/projects/omnimind/src/core/action_hooks.py"
+    ]
+  },
+  {
+    "name": "metrics-tracker",
+    "path": "/Users/MAC/Documents/projects/omnimind/src/core/metrics.py",
+    "description": "Central metrics tracking system for OSA",
+    "files": [
+      "/Users/MAC/Documents/projects/omnimind/src/core/metrics.py"
+    ]
+  },
+  {
+    "name": "self-learning",
+    "path": "/Users/MAC/Documents/projects/omnimind/src/core/self_learning.py",
+    "description": "Main self-learning system for OSA",
+    "files": [
+      "/Users/MAC/Documents/projects/omnimind/src/core/self_learning.py"
+    ]
+  },
+  {
+    "name": "persistent-memory",
+    "path": "/Users/MAC/Documents/projects/omnimind/src/core/memory_persistence.py",
+    "description": "Persistent memory system for OSA",
+    "files": [
+      "/Users/MAC/Documents/projects/omnimind/src/core/memory_persistence.py"
+    ]
+  },
+  {
+    "name": "lang-chain",
+    "path": "/Users/MAC/Documents/projects/omnimind/src/core/langchain_engine.py",
+    "description": "LangChain-powered intelligence engine for OSA",
+    "files": [
+      "/Users/MAC/Documents/projects/omnimind/src/core/langchain_engine.py"
+    ]
+  },
+  {
+    "name": "task-planner",
+    "path": "/Users/MAC/Documents/projects/omnimind/src/core/task_planner.py",
+    "description": "Autonomous task planning and execution system",
+    "files": [
+      "/Users/MAC/Documents/projects/omnimind/src/core/task_planner.py"
+    ]
+  },
+  {
+    "name": "o-s-a-autonomous",
+    "path": "/Users/MAC/Documents/projects/omnimind/src/core/osa_autonomous.py",
+    "description": "\n    Autonomous OSA that automatically determines what to do\n    based on user input without manual mode switching.\n    ",
+    "files": [
+      "/Users/MAC/Documents/projects/omnimind/src/core/osa_autonomous.py"
+    ]
+  },
+  {
+    "name": "o-s-a-logger",
+    "path": "/Users/MAC/Documents/projects/omnimind/src/core/logger.py",
+    "description": "\n    Real-time logger for OSA activities.\n    Sends logs to web interface via WebSocket.\n    ",
+    "files": [
+      "/Users/MAC/Documents/projects/omnimind/src/core/logger.py"
+    ]
+  },
+  {
+    "name": "l-l-m",
+    "path": "/Users/MAC/Documents/projects/omnimind/src/core/llm_orchestrator.py",
+    "description": "Orchestrates multiple LLMs for optimal task completion",
+    "files": [
+      "/Users/MAC/Documents/projects/omnimind/src/core/llm_orchestrator.py"
+    ]
+  },
+  {
+    "name": "agent",
+    "path": "/Users/MAC/Documents/projects/omnimind/src/core/agent_orchestrator.py",
+    "description": "Multi-agent orchestrator using LangGraph",
+    "files": [
+      "/Users/MAC/Documents/projects/omnimind/src/core/agent_orchestrator.py"
+    ]
+  },
+  {
+    "name": "m-c-p-client",
+    "path": "/Users/MAC/Documents/projects/omnimind/src/core/mcp_client.py",
+    "description": "MCP Client for OSA to connect to various MCP servers",
+    "files": [
+      "/Users/MAC/Documents/projects/omnimind/src/core/mcp_client.py"
+    ]
+  },
+  {
+    "name": "code-generator",
+    "path": "/Users/MAC/Documents/projects/omnimind/src/core/code_generator.py",
+    "description": "Advanced code generation system for OSA",
+    "files": [
+      "/Users/MAC/Documents/projects/omnimind/src/core/code_generator.py"
+    ]
+  },
+  {
+    "name": "continuous-thinking",
+    "path": "/Users/MAC/Documents/projects/omnimind/src/core/modules/thinking.py",
+    "description": "\n    OSA's continuous thinking engine that enables human-like\n    deep reasoning, multi-context awareness, and adaptive problem-solving.\n    ",
+    "files": [
+      "/Users/MAC/Documents/projects/omnimind/src/core/modules/thinking.py"
+    ]
+  },
+  {
+    "name": "daily-architecture-reviewer",
+    "path": "/Users/MAC/Documents/projects/omnimind/src/core/modules/architecture_reviewer.py",
+    "description": "\n    OSA's self-improvement system that:\n    - Reviews architecture daily\n    - Researches better tools\n    - Implements improvements\n    - Stays current with best practices\n    ",
+    "files": [
+      "/Users/MAC/Documents/projects/omnimind/src/core/modules/architecture_reviewer.py"
+    ]
+  },
+  {
+    "name": "continuous-learning",
+    "path": "/Users/MAC/Documents/projects/omnimind/src/core/modules/learning.py",
+    "description": "\n    OSA's continuous learning component that enables:\n    - Learning from user feedback\n    - Internal research and debates\n    - Pattern recognition to avoid repetition\n    - Smart work over hard work\n    ",
+    "files": [
+      "/Users/MAC/Documents/projects/omnimind/src/core/modules/learning.py"
+    ]
+  },
+  {
+    "name": "ollama-provider",
+    "path": "/Users/MAC/Documents/projects/omnimind/src/providers/ollama_provider.py",
+    "description": "\n    Provider for local LLMs via Ollama.\n    \n    Supports:\n    - Llama 3.2\n    - Mixtral\n    - DeepSeek Coder\n    - Any model Ollama supports\n    ",
+    "files": [
+      "/Users/MAC/Documents/projects/omnimind/src/providers/ollama_provider.py"
+    ]
+  },
+  {
+    "name": "provider",
+    "path": "/Users/MAC/Documents/projects/omnimind/src/providers/manager.py",
+    "description": "\n    Manages multiple LLM providers.\n    \n    This class:\n    - Registers and manages providers\n    - Routes requests to appropriate providers\n    - Handles failover between providers\n    - Tracks usage and costs\n    ",
+    "files": [
+      "/Users/MAC/Documents/projects/omnimind/src/providers/manager.py"
+    ]
+  },
+  {
+    "name": "base-provider",
+    "path": "/Users/MAC/Documents/projects/omnimind/src/providers/base.py",
+    "description": "\n    Abstract base class for all LLM providers.\n    \n    Every provider (Ollama, OpenAI, Anthropic, etc.) must implement this interface.\n    This ensures OmniMind can work with any LLM seamlessly.\n    ",
+    "files": [
+      "/Users/MAC/Documents/projects/omnimind/src/providers/base.py"
+    ]
+  },
+  {
+    "name": "omni-mind",
+    "path": "/Users/MAC/Documents/projects/omnimind/src/agents/omnimind_agent.py",
+    "description": "\n    Claude Code Agent wrapper for OmniMind.\n    \n    This agent can be invoked by Claude Code to:\n    - Remember project decisions and context\n    - Provide advice based on past experiences\n    - Build consensus from multiple LLMs\n    - Search through accumulated knowledge\n    ",
+    "files": [
+      "/Users/MAC/Documents/projects/omnimind/src/agents/omnimind_agent.py"
+    ]
+  },
+  {
+    "name": "agent-registry",
+    "path": "/Users/MAC/Documents/projects/omnimind/src/agents/registry.py",
+    "description": "\n    Registry for all available OmniMind agents.\n    \n    This registry allows Claude Code to discover and use\n    specialized agents with persistent memory.\n    ",
+    "files": [
+      "/Users/MAC/Documents/projects/omnimind/src/agents/registry.py"
+    ]
+  },
+  {
+    "name": "open-source-extractor",
+    "path": "/Users/MAC/Documents/projects/omnimind/src/agents/open_source_extractor_agent.py",
+    "description": "\n    Autonomous agent for identifying, extracting, and publishing\n    open source projects from OSA codebase\n    ",
+    "files": [
+      "/Users/MAC/Documents/projects/omnimind/src/agents/open_source_extractor_agent.py"
+    ]
+  },
+  {
+    "name": "open-source-solution-finder",
+    "path": "/Users/MAC/Documents/projects/omnimind/src/agents/open_source_solution_finder.py",
+    "description": "\n    Agent that finds open source solutions BEFORE writing custom code\n    and identifies replacement opportunities in existing codebase\n    ",
+    "files": [
+      "/Users/MAC/Documents/projects/omnimind/src/agents/open_source_solution_finder.py"
+    ]
+  },
+  {
+    "name": "base-omni-mind",
+    "path": "/Users/MAC/Documents/projects/omnimind/src/agents/base.py",
+    "description": "\n    Base class for all OmniMind-powered Claude Code agents.\n    \n    Every specialized agent inherits:\n    - Persistent memory across sessions\n    - Multi-model intelligence (5 local LLMs)\n    - Semantic knowledge search\n    - Contextual awareness\n    - Learning from past decisions\n    ",
+    "files": [
+      "/Users/MAC/Documents/projects/omnimind/src/agents/base.py"
+    ]
+  },
+  {
+    "name": "core",
+    "path": "/Users/MAC/Documents/projects/omnimind/src/core",
+    "description": "Extracted core module from OSA",
+    "files": [
+      "/Users/MAC/Documents/projects/omnimind/src/core/action_hooks.py",
+      "/Users/MAC/Documents/projects/omnimind/src/core/metrics.py",
+      "/Users/MAC/Documents/projects/omnimind/src/core/command_approval.py",
+      "/Users/MAC/Documents/projects/omnimind/src/core/self_learning.py",
+      "/Users/MAC/Documents/projects/omnimind/src/core/orchestrator_adapter.py",
+      "/Users/MAC/Documents/projects/omnimind/src/core/memory_persistence.py",
+      "/Users/MAC/Documents/projects/omnimind/src/core/langchain_engine.py",
+      "/Users/MAC/Documents/projects/omnimind/src/core/task_planner.py",
+      "/Users/MAC/Documents/projects/omnimind/src/core/osa_minimal.py",
+      "/Users/MAC/Documents/projects/omnimind/src/core/__init__.py",
+      "/Users/MAC/Documents/projects/omnimind/src/core/osa_autonomous.py",
+      "/Users/MAC/Documents/projects/omnimind/src/core/logger.py",
+      "/Users/MAC/Documents/projects/omnimind/src/core/memory_adapter.py",
+      "/Users/MAC/Documents/projects/omnimind/src/core/thinking_states.py",
+      "/Users/MAC/Documents/projects/omnimind/src/core/llm_orchestrator.py",
+      "/Users/MAC/Documents/projects/omnimind/src/core/agent_orchestrator.py",
+      "/Users/MAC/Documents/projects/omnimind/src/core/mcp_client.py",
+      "/Users/MAC/Documents/projects/omnimind/src/core/readiness.py",
+      "/Users/MAC/Documents/projects/omnimind/src/core/osa.py",
+      "/Users/MAC/Documents/projects/omnimind/src/core/code_generator.py"
+    ]
+  },
+  {
+    "name": "providers",
+    "path": "/Users/MAC/Documents/projects/omnimind/src/providers",
+    "description": "Extracted providers module from OSA",
+    "files": [
+      "/Users/MAC/Documents/projects/omnimind/src/providers/__init__.py",
+      "/Users/MAC/Documents/projects/omnimind/src/providers/openai_provider.py",
+      "/Users/MAC/Documents/projects/omnimind/src/providers/ollama_provider.py",
+      "/Users/MAC/Documents/projects/omnimind/src/providers/anthropic_provider.py",
+      "/Users/MAC/Documents/projects/omnimind/src/providers/manager.py",
+      "/Users/MAC/Documents/projects/omnimind/src/providers/base.py"
+    ]
+  },
+  {
+    "name": "agents",
+    "path": "/Users/MAC/Documents/projects/omnimind/src/agents",
+    "description": "Extracted agents module from OSA",
+    "files": [
+      "/Users/MAC/Documents/projects/omnimind/src/agents/omnimind_agent.py",
+      "/Users/MAC/Documents/projects/omnimind/src/agents/registry.py",
+      "/Users/MAC/Documents/projects/omnimind/src/agents/__init__.py",
+      "/Users/MAC/Documents/projects/omnimind/src/agents/open_source_extractor_agent.py",
+      "/Users/MAC/Documents/projects/omnimind/src/agents/open_source_solution_finder.py",
+      "/Users/MAC/Documents/projects/omnimind/src/agents/base.py"
+    ]
+  }
+]

@@ -1,3 +1,5 @@
+import pendulum
+import orjson
 """
 OmniMind Claude Code Agent
 
@@ -7,7 +9,6 @@ with perfect memory and multi-model consensus capabilities.
 
 import os
 import sys
-import json
 import asyncio
 from typing import Dict, List, Optional, Any
 from datetime import datetime
@@ -33,7 +34,7 @@ class OmniMindAgent:
         """Initialize the OmniMind agent."""
         self.omnimind = None
         self.current_project = None
-        self.session_start = datetime.now()
+        self.session_start = pendulum.now()
         
     def initialize(self, config: Optional[Dict] = None) -> str:
         """
@@ -207,11 +208,11 @@ Ready to remember and think!
         if not self.omnimind:
             return "❌ OmniMind not initialized."
         
-        duration = datetime.now() - self.session_start
+        duration = pendulum.now() - self.session_start
         
         # Get recent memories from this session
         recent = self.omnimind.get_timeline(
-            start_date=self.session_start.strftime("%Y-%m-%d")
+            start_date=self.session_start.format("%Y-%m-%d")
         )
         
         summary = f"""

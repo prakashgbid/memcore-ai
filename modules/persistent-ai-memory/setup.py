@@ -1,4 +1,4 @@
-"""Setup configuration for persistent-ai-memory."""
+"""Setup configuration for MemCore."""
 
 from setuptools import setup, find_packages
 
@@ -6,14 +6,14 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
-    name="persistent-ai-memory",
+    name="memcore",
     version="1.0.0",
-    author="OSA Contributors",
-    author_email="osa@omnimind.ai",
-    description="Persistent memory system for AI agents - never lose context again",
+    author="MemCore Contributors",
+    author_email="hello@memcore.ai",
+    description="Advanced persistent memory system for intelligent applications",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/prakashgbid/persistent-ai-memory",
+    url="https://github.com/prakashgbid/memcore-ai",
     packages=find_packages(where="src"),
     package_dir={"": "src"},
     classifiers=[
@@ -44,13 +44,13 @@ setup(
     },
     entry_points={
         "console_scripts": [
-            "ai-memory=persistent_ai_memory.cli:main",
+            "memcore=memcore.cli:main",
         ],
     },
     keywords="ai memory persistence context llm agent chromadb vector-database",
     project_urls={
-        "Bug Reports": "https://github.com/prakashgbid/persistent-ai-memory/issues",
-        "Source": "https://github.com/prakashgbid/persistent-ai-memory",
-        "Documentation": "https://persistent-ai-memory.readthedocs.io",
+        "Bug Reports": "https://github.com/prakashgbid/memcore-ai/issues",
+        "Source": "https://github.com/prakashgbid/memcore-ai",
+        "Documentation": "https://memcore-ai.readthedocs.io",
     },
 )

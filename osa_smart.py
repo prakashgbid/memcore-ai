@@ -1,7 +1,9 @@
+import pendulum
+import orjson
 #!/usr/bin/env python3
 """
-OSA Smart Terminal - Fully Autonomous AI Assistant
-No manual mode switching - OSA figures out what you need automatically
+MemCore Smart Terminal - Fully Autonomous AI Assistant
+No manual mode switching - MemCore figures out what you need automatically
 """
 
 import os
@@ -18,7 +20,7 @@ from typing import Optional, Dict, Any
 SCRIPT_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(SCRIPT_DIR / "src"))
 
-from core.osa_autonomous import OSAAutonomous
+from core.osa_autonomous import MemCoreAutonomous
 from core.logger import setup_logger
 
 # Rich terminal UI (optional)
@@ -41,15 +43,15 @@ CONFIG_FILE = CONFIG_DIR / "config.json"
 HISTORY_FILE = CONFIG_DIR / "history.txt"
 
 
-class OSASmartTerminal:
-    """OSA Smart Terminal - Fully autonomous, no manual modes."""
+class MemCoreSmartTerminal:
+    """MemCore Smart Terminal - Fully autonomous, no manual modes."""
     
     def __init__(self):
         self.osa = None
         self.config = self.load_config()
         self.setup_readline()
         self.running = True
-        self.session_start = datetime.now()
+        self.session_start = pendulum.now()
         self.interaction_count = 0
         
     def load_config(self) -> Dict[str, Any]:
@@ -112,14 +114,14 @@ class OSASmartTerminal:
         os.system('clear' if os.name == 'posix' else 'cls')
     
     def print_banner(self):
-        """Print OSA banner."""
+        """Print MemCore banner."""
         self.clear_screen()
         
         if RICH_AVAILABLE:
             banner_text = """
 ╔══════════════════════════════════════════════════════════════╗
 ║                                                              ║
-║     ██████  ███████  █████      OSA Smart v2.0              ║
+║     ██████  ███████  █████      MemCore Smart v2.0              ║
 ║    ██    ██ ██      ██   ██     Autonomous AI Assistant     ║
 ║    ██    ██ ███████ ███████                                 ║
 ║    ██    ██      ██ ██   ██     No modes. Just intelligence.║
@@ -134,7 +136,7 @@ class OSASmartTerminal:
             console.print()
         else:
             print("="*60)
-            print("OSA Smart v2.0 - Autonomous AI Assistant")
+            print("MemCore Smart v2.0 - Autonomous AI Assistant")
             print("No modes. Just intelligence.")
             print("="*60)
             print("\nI automatically understand your intent and respond accordingly.")
@@ -143,23 +145,23 @@ class OSASmartTerminal:
         print("Type 'exit' or press Ctrl+D to quit\n")
     
     async def initialize_osa(self):
-        """Initialize the OSA instance."""
+        """Initialize the MemCore instance."""
         if RICH_AVAILABLE:
-            with console.status("[bold green]Initializing OSA intelligence...", spinner="dots"):
+            with console.status("[bold green]Initializing MemCore intelligence...", spinner="dots"):
                 try:
-                    self.osa = OSAAutonomous(self.config)
+                    self.osa = MemCoreAutonomous(self.config)
                     await self.osa.initialize()
-                    console.print("✨ [bold green]OSA is ready to assist you![/bold green]")
+                    console.print("✨ [bold green]MemCore is ready to assist you![/bold green]")
                     return True
                 except Exception as e:
                     console.print(f"[bold red]❌ Failed to initialize: {e}[/bold red]")
                     return False
         else:
-            print("🚀 Initializing OSA intelligence...")
+            print("🚀 Initializing MemCore intelligence...")
             try:
-                self.osa = OSAAutonomous(self.config)
+                self.osa = MemCoreAutonomous(self.config)
                 await self.osa.initialize()
-                print("✨ OSA is ready to assist you!")
+                print("✨ MemCore is ready to assist you!")
                 return True
             except Exception as e:
                 print(f"❌ Failed to initialize: {e}")
@@ -181,10 +183,10 @@ class OSASmartTerminal:
         
         # Show thinking indicator
         if RICH_AVAILABLE:
-            with console.status("[bold cyan]OSA is thinking...", spinner="dots2"):
+            with console.status("[bold cyan]MemCore is thinking...", spinner="dots2"):
                 response = await self.osa.process_autonomously(user_input)
         else:
-            print("🤔 OSA is thinking...")
+            print("🤔 MemCore is thinking...")
             response = await self.osa.process_autonomously(user_input)
         
         # Display response
@@ -194,20 +196,20 @@ class OSASmartTerminal:
             if len(lines) > 1:
                 status, content = lines
                 console.print(f"\n[dim]{status}[/dim]")
-                console.print(Panel(content, title="OSA Response", border_style="green"))
+                console.print(Panel(content, title="MemCore Response", border_style="green"))
             else:
-                console.print(Panel(response, title="OSA Response", border_style="green"))
+                console.print(Panel(response, title="MemCore Response", border_style="green"))
         else:
             print("\n" + "="*60)
             print(response)
             print("="*60 + "\n")
     
     async def shutdown(self):
-        """Shutdown OSA gracefully."""
-        print("\n👋 Thanks for using OSA Smart!")
+        """Shutdown MemCore gracefully."""
+        print("\n👋 Thanks for using MemCore Smart!")
         
         # Show session stats
-        duration = datetime.now() - self.session_start
+        duration = pendulum.now() - self.session_start
         if RICH_AVAILABLE:
             stats = f"""
 Session Statistics:
@@ -230,7 +232,7 @@ Session Statistics:
         """Main run loop."""
         self.print_banner()
         
-        # Initialize OSA
+        # Initialize MemCore
         if not await self.initialize_osa():
             return
         
@@ -275,10 +277,10 @@ async def main():
     import argparse
     
     parser = argparse.ArgumentParser(
-        description="OSA Smart - Autonomous AI Assistant",
+        description="MemCore Smart - Autonomous AI Assistant",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
-OSA Smart automatically understands what you need.
+MemCore Smart automatically understands what you need.
 No manual modes or commands required!
 
 Examples:
@@ -306,13 +308,13 @@ Examples:
     parser.add_argument(
         "--version",
         action="version",
-        version="OSA Smart 2.0"
+        version="MemCore Smart 2.0"
     )
     
     args = parser.parse_args()
     
     # Create terminal instance
-    terminal = OSASmartTerminal()
+    terminal = MemCoreSmartTerminal()
     
     # Apply arguments
     if args.model:

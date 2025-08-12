@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
-Test OSA with Ollama - Non-interactive version
+Test MemCore with Ollama - Non-interactive version
 """
 
 import asyncio
 import ollama
 
 async def test_osa_with_ollama():
-    """Test OSA functionality with Ollama."""
+    """Test MemCore functionality with Ollama."""
     print("🚀 Testing OmniMind with Ollama")
     print("="*60)
     

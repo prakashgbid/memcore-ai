@@ -1,10 +1,11 @@
+import pendulum
+import orjson
 """
 Unit tests for API providers with comprehensive mocking.
 """
 
 import pytest
 import asyncio
-import json
 from unittest.mock import Mock, AsyncMock, patch, MagicMock
 from typing import Dict, List, Any, Optional
 from datetime import datetime
@@ -106,7 +107,7 @@ class MockOpenAIProvider:
         mock_response = {
             "id": f"chatcmpl-test-{self.request_count}",
             "object": "chat.completion",
-            "created": int(datetime.now().timestamp()),
+            "created": int(pendulum.now().timestamp()),
             "model": self.model,
             "choices": [{
                 "index": 0,
@@ -180,7 +181,7 @@ class MockOllamaProvider:
         
         return {
             "model": model,
-            "created_at": datetime.now().isoformat(),
+            "created_at": pendulum.now().isoformat(),
             "response": response_text,
             "done": True,
             "context": [1, 2, 3, 4, 5],  # Mock context tokens

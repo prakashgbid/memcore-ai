@@ -1,10 +1,11 @@
+import pendulum
+import orjson
 #!/usr/bin/env python3
 """
-Minimal working OSA implementation with Ollama integration.
+Minimal working MemCore implementation with Ollama integration.
 """
 
 import asyncio
-import json
 import logging
 from typing import Dict, List, Optional, Any
 from datetime import datetime
@@ -16,22 +17,22 @@ except ImportError:
     print("Warning: ollama package not installed. Install with: pip install ollama")
     ollama = None
 
-from .logger import setup_logger, OSALogger
+from loguru import logger
 
 
-class OSACompleteFinal:
+class MemCoreCompleteFinal:
     """
-    Minimal working OSA with core capabilities.
+    Minimal working MemCore with core capabilities.
     """
     
     def __init__(self, config: Optional[Dict[str, Any]] = None):
-        """Initialize OSA with configuration."""
+        """Initialize MemCore with configuration."""
         self.config = config or {}
         self.model = self.config.get("model", "llama3.2:3b")
         self.verbose = self.config.get("verbose", False)
         
         # Setup logger
-        self.logger = setup_logger("OSA", level="DEBUG" if self.verbose else "INFO")
+        self.logger = setup_logger("MemCore", level="DEBUG" if self.verbose else "INFO")
         
         # Initialize Ollama client
         self.client = None
@@ -51,11 +52,11 @@ class OSACompleteFinal:
         self.enable_thinking = self.config.get("enable_thinking", True)
         self.enable_learning = self.config.get("enable_learning", True)
         
-        self.logger.info("OSA initialized successfully")
+        self.logger.info("MemCore initialized successfully")
     
     async def initialize(self):
-        """Initialize OSA systems."""
-        self.logger.info("Starting OSA systems...")
+        """Initialize MemCore systems."""
+        self.logger.info("Starting MemCore systems...")
         
         # Check if Ollama is available
         if self.client:
@@ -99,7 +100,7 @@ class OSACompleteFinal:
         if self.enable_learning:
             self.logger.info("Continuous learning enabled")
         
-        self.logger.info("OSA systems initialized")
+        self.logger.info("MemCore systems initialized")
     
     async def _continuous_thinking(self):
         """Background thinking process."""
@@ -161,7 +162,7 @@ class OSACompleteFinal:
         # Add to task history
         self.task_history.append({
             'task': task,
-            'timestamp': datetime.now().isoformat()
+            'timestamp': pendulum.now().isoformat()
         })
         
         # If no Ollama client, return mock response
@@ -323,8 +324,8 @@ Provide:
             return f"Error: {e}"
     
     async def shutdown(self):
-        """Shutdown OSA systems."""
-        self.logger.info("Shutting down OSA systems...")
+        """Shutdown MemCore systems."""
+        self.logger.info("Shutting down MemCore systems...")
         
         # Stop continuous thinking
         self.enable_thinking = False
@@ -340,10 +341,10 @@ Provide:
         if self.thought_history:
             self.logger.info(f"Generated {len(self.thought_history)} thoughts")
         
-        self.logger.info("OSA shutdown complete")
+        self.logger.info("MemCore shutdown complete")
     
     def get_status(self) -> Dict[str, Any]:
-        """Get current OSA status."""
+        """Get current MemCore status."""
         return {
             'model': self.model,
             'thinking_enabled': self.enable_thinking,

@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Test OSA with actual Ollama interaction"""
+"""Test MemCore with actual Ollama interaction"""
 
 import ollama
 import sys
 
-print("Testing OSA with Ollama...")
+print("Testing MemCore with Ollama...")
 print("=" * 50)
 
 try:
@@ -28,7 +28,7 @@ try:
     print(response['response'])
     print("-" * 50)
     
-    print("\n✨ OSA is working correctly!")
+    print("\n✨ MemCore is working correctly!")
     
 except Exception as e:
     print(f"\n❌ Error: {e}")

@@ -1,5 +1,5 @@
 """
-Security tests for OSA to prevent vulnerabilities and ensure safe operations.
+Security tests for MemCore to prevent vulnerabilities and ensure safe operations.
 """
 
 import pytest
@@ -84,9 +84,9 @@ class SecurityTestUtils:
         ]
 
 
-# Mock OSA components for security testing
-class MockOSASecure:
-    """Mock OSA implementation with security features."""
+# Mock MemCore components for security testing
+class MockMemCoreSecure:
+    """Mock MemCore implementation with security features."""
     
     def __init__(self):
         self.input_validator = InputValidator()
@@ -218,7 +218,7 @@ class TestInputValidation:
     
     @pytest.fixture
     def osa_secure(self):
-        return MockOSASecure()
+        return MockMemCoreSecure()
     
     @pytest.mark.security
     @pytest.mark.asyncio
@@ -504,7 +504,7 @@ class TestSecurityIntegration:
     
     @pytest.fixture
     def osa_secure(self):
-        return MockOSASecure()
+        return MockMemCoreSecure()
     
     @pytest.mark.security
     @pytest.mark.asyncio
@@ -633,7 +633,7 @@ class TestSecurityRegression:
     
     @pytest.fixture
     def osa_secure(self):
-        return MockOSASecure()
+        return MockMemCoreSecure()
     
     @pytest.mark.security
     @pytest.mark.regression

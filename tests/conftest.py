@@ -10,7 +10,7 @@ from pathlib import Path
 from unittest.mock import AsyncMock, Mock
 from typing import AsyncGenerator, Generator
 
-# Import OSA modules for testing
+# Import MemCore modules for testing
 # Note: These imports might fail initially until the modules are created
 try:
     from src.osa_complete_final import create_complete_osa
@@ -35,7 +35,7 @@ def event_loop():
 
 @pytest.fixture
 async def osa_instance() -> AsyncGenerator:
-    """Create a test OSA instance with minimal configuration."""
+    """Create a test MemCore instance with minimal configuration."""
     config = {
         'max_instances': 1,
         'enable_learning': False,
@@ -165,9 +165,9 @@ def mock_environment_variables(monkeypatch):
     test_vars = {
         'ANTHROPIC_API_KEY': 'test-anthropic-key',
         'OPENAI_API_KEY': 'test-openai-key',
-        'OSA_MAX_INSTANCES': '2',
-        'OSA_THINKING_DEPTH': '5',
-        'OSA_LEARNING_ENABLED': 'true'
+        'MemCore_MAX_INSTANCES': '2',
+        'MemCore_THINKING_DEPTH': '5',
+        'MemCore_LEARNING_ENABLED': 'true'
     }
     
     for key, value in test_vars.items():

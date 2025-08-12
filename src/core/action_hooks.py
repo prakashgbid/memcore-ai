@@ -1,6 +1,7 @@
+import pendulum
 #!/usr/bin/env python3
 """
-OSA Action Hooks System
+MemCore Action Hooks System
 Shows real-time learning and capability improvements
 """
 
@@ -13,7 +14,7 @@ from enum import Enum
 
 
 class ActionType(Enum):
-    """Types of actions OSA can perform"""
+    """Types of actions MemCore can perform"""
     SKILL_LEARNED = "🎓"
     KNOWLEDGE_ACQUIRED = "📚"
     PATTERN_RECOGNIZED = "🔄"
@@ -96,7 +97,7 @@ class ActionHooks:
         
         # Format the action notification
         icon = event.action_type.value
-        timestamp = datetime.fromtimestamp(event.timestamp).strftime("%H:%M:%S")
+        timestamp = datetime.fromtimestamp(event.timestamp).format("%H:%M:%S")
         
         # Build the message
         message = f"\n{icon} {event.description}"
@@ -237,7 +238,7 @@ class ActionHooks:
 
 
 class ThinkingStatus:
-    """Shows OSA's current thinking/planning status"""
+    """Shows MemCore's current thinking/planning status"""
     
     def __init__(self):
         self.current_thoughts: List[str] = []
@@ -287,7 +288,7 @@ class ThinkingStatus:
         if not self.is_thinking:
             return
         
-        print("\n💭 OSA's Current Thoughts:")
+        print("\n💭 MemCore's Current Thoughts:")
         
         # Show primary thought
         if self.current_thoughts:

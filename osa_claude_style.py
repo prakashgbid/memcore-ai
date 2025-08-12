@@ -1,6 +1,8 @@
+import pendulum
+import orjson
 #!/usr/bin/env python3
 """
-OSA Terminal with Claude Code-style interface
+MemCore Terminal with Claude Code-style interface
 Professional terminal UI with distinct input areas and formatted responses
 """
 
@@ -21,7 +23,7 @@ from enum import Enum
 SCRIPT_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(SCRIPT_DIR / "src"))
 
-from core.osa_autonomous import OSAAutonomous, IntentType
+from core.osa_autonomous import MemCoreAutonomous, IntentType
 from core.logger import setup_logger
 
 # Terminal colors and styles
@@ -53,7 +55,7 @@ class Colors:
 
 
 class ResponseType(Enum):
-    """Types of responses OSA can show"""
+    """Types of responses MemCore can show"""
     THINKING = "thinking"
     TOOL_CALL = "tool_call"
     RESPONSE = "response"
@@ -61,15 +63,15 @@ class ResponseType(Enum):
     STATUS = "status"
 
 
-class OSAClaudeTerminal:
-    """OSA Terminal with Claude Code-style interface"""
+class MemCoreClaudeTerminal:
+    """MemCore Terminal with Claude Code-style interface"""
     
     def __init__(self):
         self.osa = None
         self.config = self.load_config()
         self.setup_readline()
         self.running = True
-        self.session_start = datetime.now()
+        self.session_start = pendulum.now()
         self.interaction_count = 0
         self.terminal_width = shutil.get_terminal_size().columns
         
@@ -142,17 +144,17 @@ class OSAClaudeTerminal:
         os.system('clear' if os.name == 'posix' else 'cls')
     
     def print_banner(self):
-        """Print minimal OSA banner."""
+        """Print minimal MemCore banner."""
         self.clear_screen()
-        print(f"\n{Colors.BOLD}OSA{Colors.RESET} - Autonomous AI Assistant")
+        print(f"\n{Colors.BOLD}MemCore{Colors.RESET} - Autonomous AI Assistant")
         print(f"{Colors.DIM}I understand what you need automatically{Colors.RESET}\n")
     
     async def initialize_osa(self):
-        """Initialize the OSA instance."""
-        self.show_thinking("Initializing OSA systems...")
+        """Initialize the MemCore instance."""
+        self.show_thinking("Initializing MemCore systems...")
         
         try:
-            self.osa = OSAAutonomous(self.config)
+            self.osa = MemCoreAutonomous(self.config)
             await self.osa.initialize()
             self.clear_thinking()
             return True
@@ -330,7 +332,7 @@ class OSAClaudeTerminal:
             return
         
         # Show thinking
-        self.show_thinking("OSA is analyzing your request...")
+        self.show_thinking("MemCore is analyzing your request...")
         
         try:
             # Process autonomously
@@ -365,9 +367,9 @@ class OSAClaudeTerminal:
         """Show help information."""
         help_text = """
 ╭─────────────────────────────────────────────────────╮
-│ OSA Help                                            │
+│ MemCore Help                                            │
 ├─────────────────────────────────────────────────────┤
-│ Just type naturally - OSA understands:             │
+│ Just type naturally - MemCore understands:             │
 │                                                     │
 │ • "Write a Python function..."  → Code generation  │
 │ • "Fix this error..."           → Debugging        │
@@ -380,7 +382,7 @@ class OSAClaudeTerminal:
 │ • "Analyze..."                  → Analysis         │
 │                                                     │
 │ Commands:                                          │
-│ • exit, quit - Exit OSA                            │
+│ • exit, quit - Exit MemCore                            │
 │ • help, ?    - Show this help                      │
 │                                                     │
 │ Tips:                                              │
@@ -393,11 +395,11 @@ class OSAClaudeTerminal:
         print(help_text)
     
     async def shutdown(self):
-        """Shutdown OSA gracefully."""
-        self.show_status("Shutting down OSA...")
+        """Shutdown MemCore gracefully."""
+        self.show_status("Shutting down MemCore...")
         
         # Show session stats
-        duration = datetime.now() - self.session_start
+        duration = pendulum.now() - self.session_start
         
         print(f"\n{Colors.DIM}Session Summary:{Colors.RESET}")
         print(f"  Duration: {str(duration).split('.')[0]}")
@@ -413,7 +415,7 @@ class OSAClaudeTerminal:
         """Main run loop."""
         self.print_banner()
         
-        # Initialize OSA
+        # Initialize MemCore
         if not await self.initialize_osa():
             return
         
@@ -465,7 +467,7 @@ async def main():
     import argparse
     
     parser = argparse.ArgumentParser(
-        description="OSA - Autonomous AI Assistant with Claude Code-style interface",
+        description="MemCore - Autonomous AI Assistant with Claude Code-style interface",
         formatter_class=argparse.RawDescriptionHelpFormatter
     )
     
@@ -484,13 +486,13 @@ async def main():
     parser.add_argument(
         "--version",
         action="version",
-        version="OSA Claude-Style 3.0"
+        version="MemCore Claude-Style 3.0"
     )
     
     args = parser.parse_args()
     
     # Create terminal instance
-    terminal = OSAClaudeTerminal()
+    terminal = MemCoreClaudeTerminal()
     
     # Apply arguments
     if args.model:

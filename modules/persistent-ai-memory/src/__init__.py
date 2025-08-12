@@ -1,6 +1,6 @@
 """Persistent AI Memory - Never lose context again."""
 
-from .persistent_ai_memory import (
+from .memcore import (
     PersistentMemory,
     Memory,
     MemoryType,
@@ -9,7 +9,7 @@ from .persistent_ai_memory import (
 )
 
 __version__ = "1.0.0"
-__author__ = "OSA Contributors"
+__author__ = "MemCore Contributors"
 
 __all__ = [
     "PersistentMemory",

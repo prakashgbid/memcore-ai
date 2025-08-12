@@ -6,7 +6,7 @@ from pathlib import Path
 import tempfile
 import shutil
 
-from persistent_ai_memory import (
+from memcore import (
     PersistentMemory,
     MemoryType,
     MemoryPriority
@@ -141,7 +141,7 @@ class TestPersistentMemory:
         # Export context
         context_str = memory.export_critical_context()
         
-        assert "OSA CRITICAL CONTEXT" in context_str
+        assert "MemCore CRITICAL CONTEXT" in context_str
         assert "CORE VISION" in context_str
 
 

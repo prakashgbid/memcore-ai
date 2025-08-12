@@ -1,6 +1,8 @@
+import pendulum
+import orjson
 #!/usr/bin/env python3
 """
-Performance monitoring and profiling tools for OSA.
+Performance monitoring and profiling tools for MemCore.
 
 This module provides tools for monitoring performance, detecting
 bottlenecks, and generating performance reports.
@@ -42,7 +44,7 @@ class PerformanceReport:
 
 
 class PerformanceMonitor:
-    """Real-time performance monitoring for OSA operations."""
+    """Real-time performance monitoring for MemCore operations."""
     
     def __init__(self):
         self.metrics: List[PerformanceMetric] = []
@@ -208,7 +210,7 @@ class PerformanceMonitor:
 
 
 class PerformanceProfiler:
-    """Code profiling utilities for OSA functions."""
+    """Code profiling utilities for MemCore functions."""
     
     @staticmethod
     def profile_function(func: Callable) -> Callable:
@@ -244,7 +246,7 @@ class PerformanceProfiler:
 
 
 class MemoryProfiler:
-    """Memory usage profiling for OSA operations."""
+    """Memory usage profiling for MemCore operations."""
     
     def __init__(self):
         self.snapshots: List[Dict[str, Any]] = []
@@ -256,7 +258,7 @@ class MemoryProfiler:
         
         snapshot = {
             "label": label,
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": pendulum.now().isoformat(),
             "system_memory": {
                 "total": memory.total / (1024**3),  # GB
                 "available": memory.available / (1024**3),  # GB
@@ -311,7 +313,7 @@ class MemoryProfiler:
 
 
 class BenchmarkRunner:
-    """Run performance benchmarks for OSA components."""
+    """Run performance benchmarks for MemCore components."""
     
     def __init__(self):
         self.results: List[Dict[str, Any]] = []
@@ -374,8 +376,8 @@ class BenchmarkRunner:
         if not self.results:
             return "No benchmark results available"
         
-        report = ["# OSA Performance Benchmark Report\n"]
-        report.append(f"Generated: {datetime.now().isoformat()}\n")
+        report = ["# MemCore Performance Benchmark Report\n"]
+        report.append(f"Generated: {pendulum.now().isoformat()}\n")
         
         for result in self.results:
             report.append(f"## {result['benchmark'].replace('_', ' ').title()}\n")
@@ -407,7 +409,7 @@ def main():
     """Main entry point for performance monitoring."""
     import argparse
     
-    parser = argparse.ArgumentParser(description="OSA Performance Monitor")
+    parser = argparse.ArgumentParser(description="MemCore Performance Monitor")
     parser.add_argument("--monitor", action="store_true", help="Start system monitoring")
     parser.add_argument("--duration", type=int, default=60, help="Monitoring duration (seconds)")
     parser.add_argument("--output", help="Output file for results")

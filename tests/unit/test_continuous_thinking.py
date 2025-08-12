@@ -1,3 +1,4 @@
+import pendulum
 """
 Unit tests for the continuous thinking engine.
 """
@@ -34,7 +35,7 @@ except ImportError:
             if self.connections is None:
                 self.connections = []
             if self.timestamp is None:
-                self.timestamp = datetime.now()
+                self.timestamp = pendulum.now()
     
     @dataclass
     class Context:

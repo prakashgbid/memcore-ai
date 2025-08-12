@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Test OSA's autonomous intent detection"""
+"""Test MemCore's autonomous intent detection"""
 
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent / "src"))
-from core.osa_autonomous import OSAAutonomous, IntentType
+from core.osa_autonomous import MemCoreAutonomous, IntentType
 
 # Test cases with expected intents
 test_cases = [
@@ -22,11 +22,11 @@ test_cases = [
     ("Run a command to list all files", IntentType.SYSTEM_TASK),
 ]
 
-print("Testing OSA Autonomous Intent Detection")
+print("Testing MemCore Autonomous Intent Detection")
 print("=" * 60)
 
-# Initialize OSA
-osa = OSAAutonomous()
+# Initialize MemCore
+osa = MemCoreAutonomous()
 
 # Test each case
 correct = 0

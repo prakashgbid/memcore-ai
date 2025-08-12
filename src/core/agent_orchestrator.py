@@ -1,6 +1,8 @@
+import pendulum
+import orjson
 #!/usr/bin/env python3
 """
-OSA Agent Orchestrator using LangGraph
+MemCore Agent Orchestrator using LangGraph
 Manages multi-agent collaboration and workflow orchestration
 """
 
@@ -90,7 +92,7 @@ class AgentOrchestrator:
     def __init__(self, langchain_engine=None, config: Dict[str, Any] = None):
         self.config = config or {}
         self.langchain_engine = langchain_engine
-        self.logger = logging.getLogger("OSA-Orchestrator")
+        self.logger = logging.getLogger("MemCore-Orchestrator")
         
         # Agent registry
         self.agents: Dict[str, AgentProfile] = {}
@@ -278,7 +280,7 @@ class AgentOrchestrator:
             prompt = f"""As a supervisor agent, analyze this task and decide which specialized agent should handle it:
 
 Task: {task}
-Context: {json.dumps(context, indent=2)}
+Context: {orjson.dumps(context, indent=2).decode()}
 
 Available agents:
 {self._format_agent_list()}
@@ -301,7 +303,7 @@ Respond with the name of the most appropriate agent and a brief reason."""
                     "from": "supervisor",
                     "to": agent_name,
                     "reason": response,
-                    "timestamp": datetime.now().isoformat()
+                    "timestamp": pendulum.now().isoformat()
                 })
         
         return state
@@ -327,7 +329,7 @@ Your capabilities: {', '.join(profile.capabilities)}
 Available tools: {', '.join(profile.tools)}
 
 Task: {task}
-Context: {json.dumps(context, indent=2)}
+Context: {orjson.dumps(context, indent=2).decode()}
 
 Previous messages:
 {self._format_messages(messages[-5:])}
@@ -349,7 +351,7 @@ Provide your response and indicate if the task is complete or if another agent i
                 state["intermediate_results"].append({
                     "agent": profile.name,
                     "response": response,
-                    "timestamp": datetime.now().isoformat()
+                    "timestamp": pendulum.now().isoformat()
                 })
                 
                 # Check if task is complete
@@ -433,7 +435,7 @@ Provide your response and indicate if the task is complete or if another agent i
             "final_result": None,
             "handoffs": [],
             "metadata": {
-                "start_time": datetime.now().isoformat(),
+                "start_time": pendulum.now().isoformat(),
                 "collaboration_mode": self.collaboration_mode.value
             }
         }

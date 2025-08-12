@@ -27,7 +27,7 @@ print(f"{Colors.DIM}│{Colors.RESET} {Colors.BOLD}{Colors.CYAN}You{Colors.RESET
 print(f"{Colors.DIM}╰{'─' * (width - 2)}╯{Colors.RESET}")
 
 # Test thinking indicator
-print(f"\n{Colors.YELLOW}✻{Colors.RESET} {Colors.DIM}OSA is analyzing your request...{Colors.RESET}")
+print(f"\n{Colors.YELLOW}✻{Colors.RESET} {Colors.DIM}MemCore is analyzing your request...{Colors.RESET}")
 
 # Test tool call
 print(f"\n{Colors.CYAN}⏺{Colors.RESET} {Colors.BOLD}💻 Code Generation{Colors.RESET}")

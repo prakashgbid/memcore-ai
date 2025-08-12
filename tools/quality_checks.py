@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Custom quality checks and anti-pattern detection for OSA project.
+Custom quality checks and anti-pattern detection for MemCore project.
 
 This module implements custom linting rules and checks for code quality,
 architecture patterns, and project-specific best practices.
@@ -31,8 +31,8 @@ class QualityIssue:
     suggestion: str = ""
 
 
-class OSACodeAnalyzer(ast.NodeVisitor):
-    """AST-based analyzer for OSA-specific code patterns."""
+class MemCoreCodeAnalyzer(ast.NodeVisitor):
+    """AST-based analyzer for MemCore-specific code patterns."""
     
     def __init__(self, file_path: str):
         self.file_path = file_path
@@ -52,7 +52,7 @@ class OSACodeAnalyzer(ast.NodeVisitor):
                 line_number=node.lineno,
                 column=node.col_offset,
                 severity="warning",
-                rule_id="OSA001",
+                rule_id="MemCore001",
                 message=f"Class '{node.name}' has {method_count} methods. Consider splitting into smaller classes.",
                 suggestion="Apply Single Responsibility Principle"
             ))
@@ -64,7 +64,7 @@ class OSACodeAnalyzer(ast.NodeVisitor):
                 line_number=node.lineno,
                 column=node.col_offset,
                 severity="error",
-                rule_id="OSA002",
+                rule_id="MemCore002",
                 message=f"Public class '{node.name}' missing docstring",
                 suggestion="Add Google-style docstring"
             ))
@@ -84,7 +84,7 @@ class OSACodeAnalyzer(ast.NodeVisitor):
                 line_number=node.lineno,
                 column=node.col_offset,
                 severity="warning",
-                rule_id="OSA003",
+                rule_id="MemCore003",
                 message=f"Function '{node.name}' has {param_count} parameters. Consider using configuration objects.",
                 suggestion="Group related parameters into dataclasses"
             ))
@@ -96,7 +96,7 @@ class OSACodeAnalyzer(ast.NodeVisitor):
                 line_number=node.lineno,
                 column=node.col_offset,
                 severity="error",
-                rule_id="OSA004",
+                rule_id="MemCore004",
                 message=f"Public function '{node.name}' missing return type annotation",
                 suggestion="Add -> ReturnType annotation"
             ))
@@ -110,7 +110,7 @@ class OSACodeAnalyzer(ast.NodeVisitor):
                     line_number=node.lineno,
                     column=node.col_offset,
                     severity="warning",
-                    rule_id="OSA005",
+                    rule_id="MemCore005",
                     message=f"Async function '{node.name}' doesn't use await",
                     suggestion="Consider making function synchronous or add await calls"
                 ))
@@ -128,7 +128,7 @@ class OSACodeAnalyzer(ast.NodeVisitor):
                     line_number=handler.lineno,
                     column=handler.col_offset,
                     severity="error",
-                    rule_id="OSA006",
+                    rule_id="MemCore006",
                     message="Bare except clause catches all exceptions",
                     suggestion="Catch specific exception types"
                 ))
@@ -140,7 +140,7 @@ class OSACodeAnalyzer(ast.NodeVisitor):
                     line_number=handler.lineno,
                     column=handler.col_offset,
                     severity="warning",
-                    rule_id="OSA007",
+                    rule_id="MemCore007",
                     message="Empty except block silences errors",
                     suggestion="Log the exception or re-raise with context"
                 ))
@@ -158,7 +158,7 @@ class OSACodeAnalyzer(ast.NodeVisitor):
                     line_number=node.lineno,
                     column=node.col_offset,
                     severity="warning",
-                    rule_id="OSA008",
+                    rule_id="MemCore008",
                     message=f"Importing potentially dangerous module '{alias.name}'",
                     suggestion="Ensure secure usage or consider alternatives"
                 ))
@@ -179,7 +179,7 @@ class OSACodeAnalyzer(ast.NodeVisitor):
                 line_number=node.lineno,
                 column=node.col_offset,
                 severity="error",
-                rule_id="OSA009",
+                rule_id="MemCore009",
                 message="Synchronous HTTP call in async function blocks event loop",
                 suggestion="Use aiohttp or httpx for async HTTP calls"
             ))
@@ -194,7 +194,7 @@ class OSACodeAnalyzer(ast.NodeVisitor):
                 line_number=node.lineno,
                 column=node.col_offset,
                 severity="warning",
-                rule_id="OSA010",
+                rule_id="MemCore010",
                 message="Use logging instead of print statements",
                 suggestion="Replace with logger.info() or appropriate log level"
             ))
@@ -477,7 +477,7 @@ def analyze_file(file_path: str) -> List[QualityIssue]:
             source = f.read()
         
         tree = ast.parse(source)
-        analyzer = OSACodeAnalyzer(file_path)
+        analyzer = MemCoreCodeAnalyzer(file_path)
         analyzer.visit(tree)
         
         return analyzer.issues

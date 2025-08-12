@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Demo of OSA Autonomous Capabilities
-Shows how OSA automatically handles different types of requests
+Demo of MemCore Autonomous Capabilities
+Shows how MemCore automatically handles different types of requests
 """
 
 import asyncio
@@ -9,16 +9,16 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent / "src"))
-from core.osa_autonomous import OSAAutonomous
+from core.osa_autonomous import MemCoreAutonomous
 
 async def demo():
     print("=" * 70)
-    print("OSA AUTONOMOUS DEMO - No Manual Mode Switching!")
+    print("MemCore AUTONOMOUS DEMO - No Manual Mode Switching!")
     print("=" * 70)
-    print("\nOSA automatically understands what you need...\n")
+    print("\nMemCore automatically understands what you need...\n")
     
-    # Initialize OSA
-    osa = OSAAutonomous({"verbose": False})
+    # Initialize MemCore
+    osa = MemCoreAutonomous({"verbose": False})
     await osa.initialize()
     
     # Demo requests showing automatic intent detection
@@ -46,14 +46,14 @@ async def demo():
         # Show just the status line (first line of response)
         status_line = response.split('\n')[0]
         print(status_line)
-        print("✅ OSA automatically understood and responded appropriately!")
+        print("✅ MemCore automatically understood and responded appropriately!")
         
         # Small delay for readability
         await asyncio.sleep(0.5)
     
     print(f"\n{'='*70}")
     print("DEMO COMPLETE!")
-    print("OSA handled all requests without any manual mode switching!")
+    print("MemCore handled all requests without any manual mode switching!")
     print("=" * 70)
 
 if __name__ == "__main__":

@@ -1,5 +1,6 @@
+import orjson
 """
-Regression tests for known issues and bug fixes in OSA.
+Regression tests for known issues and bug fixes in MemCore.
 
 These tests ensure that previously fixed bugs don't reoccur and that
 known edge cases are handled correctly.
@@ -550,7 +551,7 @@ class TestPerformanceRegressions:
         # Simulate typical workload
         data_structures = []
         for i in range(1000):
-            # Create typical OSA data structures
+            # Create typical MemCore data structures
             thought = {
                 "id": f"thought-{i}",
                 "content": f"This is thought {i} about various topics",
@@ -673,9 +674,9 @@ class TestDataCorruptionPrevention:
                 
                 # Ensure serializable
                 try:
-                    return json.dumps(safe_data, ensure_ascii=False)
+                    return orjson.dumps(safe_data, ensure_ascii=False).decode()
                 except (TypeError, ValueError) as e:
-                    return json.dumps({"error": f"Serialization failed: {e}"})
+                    return orjson.dumps({"error": f"Serialization failed: {e}"}).decode()
         
         processor = MockJSONProcessor()
         
@@ -695,7 +696,7 @@ class TestDataCorruptionPrevention:
         assert isinstance(result, str)
         
         # Should be valid JSON
-        parsed = json.loads(result)
+        parsed = orjson.loads(result)
         assert isinstance(parsed, dict)
         
         # Should contain safe versions of data

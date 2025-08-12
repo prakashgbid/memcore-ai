@@ -1,32 +1,33 @@
+import pendulum
+import orjson
 #!/usr/bin/env python3
 """
-OSA Complete Final - The Ultimate Autonomous Thinking System
+MemCore Complete Final - The Ultimate Autonomous Thinking System
 
 This integrates ALL core components:
-1. OSA Core (Brain + Orchestrator)
+1. MemCore Core (Brain + Orchestrator)
 2. Continuous Learning System
 3. Daily Architecture Reviewer  
 4. Continuous Thinking Engine
 
-OSA now thinks like a human - continuously, deeply, adaptively.
+MemCore now thinks like a human - continuously, deeply, adaptively.
 """
 
 import asyncio
-import json
 from typing import Dict, List, Optional, Any
 from datetime import datetime
 from pathlib import Path
 import logging
 
-# Core OSA components
+# Core MemCore components
 from .modules.thinking import ContinuousThinkingEngine
 from .modules.learning import ContinuousLearningSystem
-from .logger import setup_logger, OSALogger
+from loguru import logger
 
 
-class OSACompleteFinal:
+class MemCoreCompleteFinal:
     """
-    The complete OSA with all capabilities:
+    The complete MemCore with all capabilities:
     - Core intelligence and orchestration
     - Continuous learning from experience
     - Daily architecture self-review
@@ -46,26 +47,26 @@ class OSACompleteFinal:
             'never_stuck': True  # Always finds alternatives
         })
         
-        self.logger.info("🧠 Initializing OSA Complete with Human-like Thinking")
+        self.logger.info("🧠 Initializing MemCore Complete with Human-like Thinking")
     
     async def initialize(self):
-        """Initialize complete OSA with all subsystems including thinking"""
+        """Initialize complete MemCore with all subsystems including thinking"""
         
-        # Initialize base enhanced OSA (includes learning & architecture)
+        # Initialize base enhanced MemCore (includes learning & architecture)
         await super().initialize()
         
         # Add continuous thinking engine
         self.logger.info("💭 Adding continuous thinking capabilities...")
         await enhance_osa_with_thinking(self)
         
-        self.logger.info("🌟 OSA Complete fully operational with human-like thinking!")
+        self.logger.info("🌟 MemCore Complete fully operational with human-like thinking!")
         
         return self._get_complete_greeting()
     
     def _get_complete_greeting(self) -> str:
-        """Generate complete OSA greeting"""
+        """Generate complete MemCore greeting"""
         return """
-🧠 OSA Complete - The Ultimate Thinking Intelligence!
+🧠 MemCore Complete - The Ultimate Thinking Intelligence!
 
 I am your autonomous peer that thinks and works like a human:
 
@@ -193,7 +194,7 @@ Just tell me what you need - I'll think deeply and get it done!
     ) -> Dict[str, Any]:
         """
         Lead a complex project using human-like thinking and delegation.
-        This showcases OSA's leadership capabilities.
+        This showcases MemCore's leadership capabilities.
         """
         
         self.logger.info(f"👔 Taking leadership of project: {project_name}")
@@ -245,7 +246,7 @@ Just tell me what you need - I'll think deeply and get it done!
     async def solve_with_alternatives(self, problem: str) -> Dict[str, Any]:
         """
         Solve a problem, always finding alternatives if blocked.
-        Demonstrates OSA's never-stuck capability.
+        Demonstrates MemCore's never-stuck capability.
         """
         
         self.logger.info(f"🔧 Solving with guaranteed alternatives: {problem}")
@@ -324,7 +325,7 @@ Just tell me what you need - I'll think deeply and get it done!
     async def think_continuously_about(self, topic: str, duration_seconds: int = 30):
         """
         Think continuously about a topic for a duration.
-        Shows OSA's human-like continuous thinking.
+        Shows MemCore's human-like continuous thinking.
         """
         
         self.logger.info(f"💭 Continuous thinking about: {topic} for {duration_seconds}s")
@@ -341,22 +342,22 @@ Just tell me what you need - I'll think deeply and get it done!
 
 
 # Convenience functions
-async def create_complete_osa(max_claude_instances: int = 10) -> OSACompleteFinal:
-    """Create and initialize the complete OSA"""
-    osa = OSACompleteFinal(max_claude_instances=max_claude_instances)
+async def create_complete_osa(max_claude_instances: int = 10) -> MemCoreCompleteFinal:
+    """Create and initialize the complete MemCore"""
+    osa = MemCoreCompleteFinal(max_claude_instances=max_claude_instances)
     await osa.initialize()
     return osa
 
 
 # Comprehensive demo
 async def demo_complete_osa():
-    """Demonstrate the complete OSA with all capabilities"""
+    """Demonstrate the complete MemCore with all capabilities"""
     
     print("=" * 80)
-    print("🧠 OSA Complete - Human-like Thinking Intelligence Demo")
+    print("🧠 MemCore Complete - Human-like Thinking Intelligence Demo")
     print("=" * 80)
     
-    # Create complete OSA
+    # Create complete MemCore
     osa = await create_complete_osa(max_claude_instances=5)
     
     # Demo 1: Deep thinking and accomplishment
@@ -366,7 +367,7 @@ async def demo_complete_osa():
     
     task = "Build a social media dashboard with real-time analytics"
     print(f"Task: {task}")
-    print("\n🧠 OSA is thinking deeply about all aspects...")
+    print("\n🧠 MemCore is thinking deeply about all aspects...")
     
     result = await osa.think_and_accomplish(task)
     
@@ -414,7 +415,7 @@ async def demo_complete_osa():
     print("="*60)
     
     print("Topic: How to make apps go viral")
-    print("OSA will think continuously for 10 seconds...")
+    print("MemCore will think continuously for 10 seconds...")
     
     thinking_result = await osa.think_continuously_about(
         "How to make apps go viral",
@@ -432,7 +433,7 @@ async def demo_complete_osa():
     
     # Final status
     print("\n" + "="*80)
-    print("📊 Complete OSA Status")
+    print("📊 Complete MemCore Status")
     print("="*80)
     
     status = osa.get_complete_status()
@@ -455,8 +456,8 @@ async def demo_complete_osa():
         print(f"  • Thought connections: {status['thinking']['connections']}")
     
     print("\n" + "="*80)
-    print("✨ OSA Complete Demo Finished!")
-    print("OSA now thinks and works like a human - continuously, deeply, adaptively.")
+    print("✨ MemCore Complete Demo Finished!")
+    print("MemCore now thinks and works like a human - continuously, deeply, adaptively.")
     print("="*80)
 
 

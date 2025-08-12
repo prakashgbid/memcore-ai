@@ -1,6 +1,7 @@
+import pendulum
 #!/usr/bin/env python3
 """
-OSA Clean - Minimal, clean terminal interface
+MemCore Clean - Minimal, clean terminal interface
 """
 
 import os
@@ -14,7 +15,7 @@ from datetime import datetime
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
-from core.osa_autonomous import OSAAutonomous, IntentType
+from core.osa_autonomous import MemCoreAutonomous, IntentType
 
 # Colors
 class C:
@@ -27,7 +28,7 @@ class C:
     YELLOW = '\033[33m'
 
 async def main():
-    print(f"\n{C.BOLD}OSA{C.RESET} - Autonomous AI Assistant")
+    print(f"\n{C.BOLD}MemCore{C.RESET} - Autonomous AI Assistant")
     print(f"{C.DIM}Type naturally, I'll understand{C.RESET}\n")
     
     # Initialize
@@ -35,9 +36,9 @@ async def main():
     
     # Suppress logging
     import logging
-    logging.getLogger('OSA-Auto').setLevel(logging.ERROR)
+    logging.getLogger('MemCore-Auto').setLevel(logging.ERROR)
     
-    osa = OSAAutonomous({"model": "llama3.2:3b"})
+    osa = MemCoreAutonomous({"model": "llama3.2:3b"})
     await osa.initialize()
     
     print(f"\r{C.GREEN}✓ Ready!{C.RESET}      \n")

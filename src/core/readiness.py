@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-OSA System Readiness Checker
+MemCore System Readiness Checker
 Ensures all components are operational before starting
 """
 
@@ -36,7 +36,7 @@ class ComponentCheck:
 
 
 class SystemReadiness:
-    """System readiness checker for OSA"""
+    """System readiness checker for MemCore"""
     
     def __init__(self, verbose: bool = False):
         self.verbose = verbose
@@ -94,7 +94,7 @@ class SystemReadiness:
     def _print_header(self):
         """Print the header for readiness checks"""
         print("\n" + "═" * 60)
-        print("OSA System Initialization")
+        print("MemCore System Initialization")
         print("═" * 60)
     
     def _print_summary(self, all_ready: bool):

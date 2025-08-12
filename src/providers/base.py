@@ -1,3 +1,4 @@
+import pendulum
 """
 Base Provider Interface
 
@@ -25,7 +26,7 @@ class ProviderResponse:
     
     def __post_init__(self):
         if self.timestamp is None:
-            self.timestamp = datetime.now()
+            self.timestamp = pendulum.now()
 
 
 class BaseProvider(ABC):

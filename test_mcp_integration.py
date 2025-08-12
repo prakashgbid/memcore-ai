@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Test MCP Integration with OSA
+Test MCP Integration with MemCore
 Tests the Model Context Protocol servers
 """
 
@@ -13,21 +13,21 @@ from pathlib import Path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
 async def test_mcp_integration():
-    """Test MCP server integration with OSA"""
+    """Test MCP server integration with MemCore"""
     
     print("=" * 60)
-    print("OSA MCP Integration Test Suite")
+    print("MemCore MCP Integration Test Suite")
     print("=" * 60)
     print()
     
     try:
-        # Import OSA components
-        from core.osa_autonomous import OSAAutonomous
+        # Import MemCore components
+        from core.osa_autonomous import MemCoreAutonomous
         from core.mcp_client import get_mcp_client
         
-        # Initialize OSA with MCP
-        print("🚀 Initializing OSA with MCP integration...")
-        osa = OSAAutonomous({
+        # Initialize MemCore with MCP
+        print("🚀 Initializing MemCore with MCP integration...")
+        osa = MemCoreAutonomous({
             "verbose": True,
             "mcp": {
                 "enabled": True,
@@ -37,7 +37,7 @@ async def test_mcp_integration():
         
         # Initialize systems
         await osa.initialize()
-        print("✓ OSA initialized successfully")
+        print("✓ MemCore initialized successfully")
         print()
         
         # Get status
@@ -79,7 +79,7 @@ async def test_mcp_integration():
         response = await osa.process_autonomously("What is the test value I asked you to remember?")
         print(f"   Recall: {response[:100]}...")
         
-        # Test filesystem operations (simulated through OSA)
+        # Test filesystem operations (simulated through MemCore)
         print("\n2. Filesystem Server Test:")
         response = await osa.process_autonomously("List the Python files in the current directory")
         print(f"   Result: {response[:150]}...")
@@ -107,7 +107,7 @@ async def test_mcp_integration():
 
 
 async def test_mcp_direct():
-    """Test MCP client directly without OSA"""
+    """Test MCP client directly without MemCore"""
     
     print("\n" + "=" * 60)
     print("Direct MCP Client Test")
@@ -160,7 +160,7 @@ async def test_mcp_direct():
 
 
 if __name__ == "__main__":
-    print("OSA MCP Integration Test Suite")
+    print("MemCore MCP Integration Test Suite")
     print("==============================\n")
     
     # Run both test suites

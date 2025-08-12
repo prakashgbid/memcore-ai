@@ -1,6 +1,7 @@
+import orjson
 #!/usr/bin/env python3
 """
-Dependency management and security checker for OSA project.
+Dependency management and security checker for MemCore project.
 
 This tool analyzes project dependencies for security vulnerabilities,
 license compatibility, and version management.
@@ -157,7 +158,7 @@ class DependencyAnalyzer:
             
             if result.returncode != 0 and result.stdout:
                 try:
-                    vulns = json.loads(result.stdout)
+                    vulns = orjson.loads(result.stdout)
                     for vuln in vulns:
                         self.issues.append(DependencyIssue(
                             package=vuln.get('package'),
@@ -254,7 +255,7 @@ class DependencyAnalyzer:
             )
             
             if result.returncode == 0:
-                outdated = json.loads(result.stdout)
+                outdated = orjson.loads(result.stdout)
                 
                 for package in outdated:
                     # Check if it's a major version update

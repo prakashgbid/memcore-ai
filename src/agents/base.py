@@ -1,3 +1,5 @@
+import pendulum
+import orjson
 """
 Base OmniMind Agent for Claude Code
 
@@ -47,7 +49,7 @@ class BaseOmniMindAgent(ABC):
         self.agent_name = agent_name
         self.specialization = specialization
         self.omnimind = None
-        self.session_start = datetime.now()
+        self.session_start = pendulum.now()
         self.current_context = {}
         self.conversation_history = []
         
@@ -148,7 +150,7 @@ I remember everything and learn from each interaction!
             enhanced_prompt = f"""
 {self.get_specialization_prompt()}
 
-Current Context: {json.dumps(self.current_context, indent=2) if self.current_context else 'None'}
+Current Context: {orjson.dumps(self.current_context, indent=2).decode() if self.current_context else 'None'}
 
 Question: {question}
 
@@ -213,7 +215,7 @@ Decision: {decision}
 Rationale: {rationale}
 Agent: {self.agent_name}
 Specialization: {self.specialization}
-Context: {json.dumps(self.current_context, indent=2)}
+Context: {orjson.dumps(self.current_context, indent=2).decode()}
 """
         
         all_tags = self.memory_tags.copy()
@@ -325,7 +327,7 @@ Agent: {self.agent_name}
 Situation: {situation}
 Outcome: {outcome}
 Lesson: {lesson}
-Timestamp: {datetime.now()}
+Timestamp: {pendulum.now()}
 
 This will inform future {self.specialization} decisions.
 """
@@ -422,14 +424,14 @@ This will inform future {self.specialization} decisions.
         if not self.omnimind:
             return "No session to summarize."
         
-        duration = datetime.now() - self.session_start
+        duration = pendulum.now() - self.session_start
         
         summary = f"""
 📊 {self.agent_name} Session Summary
 {'=' * 40}
 Duration: {duration}
 Specialization: {self.specialization}
-Context: {json.dumps(self.current_context, indent=2) if self.current_context else 'None'}
+Context: {orjson.dumps(self.current_context, indent=2).decode() if self.current_context else 'None'}
 Interactions: {len(self.conversation_history) // 2}
 
 Key Topics Discussed:

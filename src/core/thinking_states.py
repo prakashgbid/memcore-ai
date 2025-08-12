@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-OSA Thinking States - Whimsical status messages
+MemCore Thinking States - Whimsical status messages
 Adds personality and fun to the waiting experience
 """
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Working OSA with fixed model detection"""
+"""Working MemCore with fixed model detection"""
 
 import asyncio
 import ollama
@@ -9,7 +9,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
 async def main():
-    print("🚀 OSA Quick Start")
+    print("🚀 MemCore Quick Start")
     print("=" * 50)
     
     # Initialize Ollama client

@@ -1,8 +1,10 @@
+import pendulum
+import orjson
 #!/usr/bin/env python3
 """
-OSA Real-time Logger and WebSocket Server
+MemCore Real-time Logger and WebSocket Server
 
-Provides real-time logging of all OSA activities through WebSocket
+Provides real-time logging of all MemCore activities through WebSocket
 for the web monitoring interface.
 """
 
@@ -84,9 +86,9 @@ class LogEntry:
         }
 
 
-class OSALogger:
+class MemCoreLogger:
     """
-    Real-time logger for OSA activities.
+    Real-time logger for MemCore activities.
     Sends logs to web interface via WebSocket.
     """
     
@@ -113,7 +115,7 @@ class OSALogger:
         self.server_thread.start()
         
         # Log startup
-        self.log(LogType.SYSTEM, "OSA Logger initialized")
+        self.log(LogType.SYSTEM, "MemCore Logger initialized")
     
     def setup_file_logging(self):
         """Setup file-based logging"""
@@ -121,7 +123,7 @@ class OSALogger:
         log_dir.mkdir(parents=True, exist_ok=True)
         
         # Create session directory
-        self.current_session_id = datetime.now().strftime("%Y%m%d_%H%M%S")
+        self.current_session_id = pendulum.now().format("%Y%m%d_%H%M%S")
         session_dir = log_dir / self.current_session_id
         session_dir.mkdir(exist_ok=True)
         
@@ -136,14 +138,14 @@ class OSALogger:
         )
         
         self.session_dir = session_dir
-        self.logger = logging.getLogger('OSA')
+        self.logger = logging.getLogger('MemCore')
     
     def log(self, log_type: LogType, message: str, metadata: Dict[str, Any] = None):
         """Log an event"""
         entry = LogEntry(
             type=log_type,
             message=message,
-            timestamp=datetime.now(),
+            timestamp=pendulum.now(),
             metadata=metadata
         )
         
@@ -186,11 +188,11 @@ class OSALogger:
     async def broadcast(self, entry: LogEntry):
         """Broadcast log entry to all connected clients"""
         if self.clients:
-            message = json.dumps({
+            message = orjson.dumps({
                 'type': 'log',
                 'category': entry.type.value,
                 'message': entry.message,
-                'timestamp': entry.timestamp.isoformat(),
+                'timestamp': entry.timestamp.isoformat().decode(),
                 'metadata': entry.metadata or {}
             })
             
@@ -208,10 +210,10 @@ class OSALogger:
     async def broadcast_metrics(self):
         """Broadcast metrics update to all clients"""
         if self.clients:
-            message = json.dumps({
+            message = orjson.dumps({
                 'type': 'metrics',
                 'metrics': self.metrics
-            })
+            }).decode()
             
             disconnected = set()
             for client in self.clients:
@@ -229,28 +231,28 @@ class OSALogger:
         
         try:
             # Send initial state
-            await websocket.send(json.dumps({
+            await websocket.send(orjson.dumps({
                 'type': 'status',
                 'status': {
                     'connected': True,
                     'session_id': self.current_session_id,
-                    'total_logs': len(self.logs)
+                    'total_logs': len(self.logs).decode()
                 }
             }))
             
             # Send current metrics
-            await websocket.send(json.dumps({
+            await websocket.send(orjson.dumps({
                 'type': 'metrics',
                 'metrics': self.metrics
-            }))
+            }).decode())
             
             # Send recent logs
             for log in list(self.logs)[-50:]:  # Last 50 logs
-                await websocket.send(json.dumps({
+                await websocket.send(orjson.dumps({
                     'type': 'log',
                     'category': log.type.value,
                     'message': log.message,
-                    'timestamp': log.timestamp.isoformat(),
+                    'timestamp': log.timestamp.isoformat().decode(),
                     'metadata': log.metadata or {}
                 }))
             
@@ -330,7 +332,7 @@ class OSALogger:
         
         session_data = {
             'id': self.current_session_id,
-            'timestamp': datetime.now().isoformat(),
+            'timestamp': pendulum.now().isoformat(),
             'logs': [log.to_dict() for log in self.logs],
             'metrics': self.metrics
         }
@@ -354,20 +356,20 @@ class OSALogger:
 # Global logger instance
 _logger_instance = None
 
-def get_osa_logger() -> OSALogger:
-    """Get or create the global OSA logger"""
+def get_osa_logger() -> MemCoreLogger:
+    """Get or create the global MemCore logger"""
     global _logger_instance
     if _logger_instance is None:
-        _logger_instance = OSALogger()
+        _logger_instance = MemCoreLogger()
     return _logger_instance
 
 
-# Integration with OSA
+# Integration with MemCore
 def integrate_logger_with_osa(osa_instance):
-    """Integrate the logger with an OSA instance"""
+    """Integrate the logger with an MemCore instance"""
     logger = get_osa_logger()
     
-    # Store logger in OSA
+    # Store logger in MemCore
     osa_instance.logger_instance = logger
     
     # Override logging methods
@@ -408,10 +410,10 @@ if __name__ == "__main__":
     
     logger = get_osa_logger()
     
-    print("OSA Logger running on ws://localhost:8765")
+    print("MemCore Logger running on ws://localhost:8765")
     print("Open web/index.html in a browser to view logs")
     
-    # Simulate OSA activity
+    # Simulate MemCore activity
     logger.log_thinking("Analyzing user goal: Build a viral app")
     time.sleep(1)
     

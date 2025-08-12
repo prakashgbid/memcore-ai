@@ -1,6 +1,7 @@
+import orjson
 #!/usr/bin/env python3
 """
-OSA MCP Client Integration
+MemCore MCP Client Integration
 Connects to Model Context Protocol servers for enhanced capabilities
 """
 
@@ -53,11 +54,11 @@ class MCPServerConfig:
     
 
 class MCPClient:
-    """MCP Client for OSA to connect to various MCP servers"""
+    """MCP Client for MemCore to connect to various MCP servers"""
     
     def __init__(self, config: Optional[Dict[str, Any]] = None):
         self.config = config or {}
-        self.logger = logging.getLogger("OSA-MCP")
+        self.logger = logging.getLogger("MemCore-MCP")
         self.servers = {}
         self.processes = {}
         self.connected_servers = {}
@@ -361,14 +362,14 @@ class MCPClient:
             process = self.processes[server_name]
             
             # Send command as JSON
-            command_json = json.dumps(command) + "\n"
+            command_json = orjson.dumps(command).decode() + "\n"
             process.stdin.write(command_json.encode())
             await process.stdin.drain()
             
             # Read response
             response_line = await process.stdout.readline()
             if response_line:
-                return json.loads(response_line.decode())
+                return orjson.loads(response_line.decode())
             
             return None
             

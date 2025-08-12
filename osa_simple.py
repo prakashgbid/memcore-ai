@@ -1,24 +1,24 @@
 #!/usr/bin/env python3
 """
-Simplified OSA for testing - Direct Ollama integration
+Simplified MemCore for testing - Direct Ollama integration
 """
 
 import asyncio
 import ollama
 from typing import Dict, Any, Optional
 
-class SimpleOSA:
-    """Simplified OSA with direct Ollama integration."""
+class SimpleMemCore:
+    """Simplified MemCore with direct Ollama integration."""
     
     def __init__(self, model: str = "llama3.2:3b"):
         self.model = model
         self.client = ollama.Client()
         self.context = []
-        print(f"🤖 OSA initialized with model: {model}")
+        print(f"🤖 MemCore initialized with model: {model}")
     
     async def initialize(self):
-        """Initialize OSA systems."""
-        print("🚀 Starting OSA systems...")
+        """Initialize MemCore systems."""
+        print("🚀 Starting MemCore systems...")
         # Check if model exists
         try:
             models = self.client.list()
@@ -72,19 +72,19 @@ class SimpleOSA:
         return result
     
     async def shutdown(self):
-        """Shutdown OSA."""
-        print("\n👋 OSA shutting down...")
+        """Shutdown MemCore."""
+        print("\n👋 MemCore shutting down...")
         self.context = []
 
 
 async def main():
-    """Test the simplified OSA."""
+    """Test the simplified MemCore."""
     print("="*60)
-    print("🎯 OmniMind Simple OSA Test")
+    print("🎯 OmniMind Simple MemCore Test")
     print("="*60)
     
-    # Initialize OSA
-    osa = SimpleOSA(model="llama3.2:3b")
+    # Initialize MemCore
+    osa = SimpleMemCore(model="llama3.2:3b")
     await osa.initialize()
     
     # Interactive mode

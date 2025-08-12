@@ -1,12 +1,13 @@
+import pendulum
+import orjson
 #!/usr/bin/env python3
 """
-OSA LangChain Intelligence Engine
+MemCore LangChain Intelligence Engine
 Integrates LangChain for advanced reasoning, memory, and autonomous agents
 """
 
 import os
 import asyncio
-import json
 from typing import Dict, Any, Optional, List, Tuple, Union
 from datetime import datetime
 from pathlib import Path
@@ -49,8 +50,8 @@ try:
 except ImportError:
     GOOGLE_AI_AVAILABLE = False
 
-class OSACallback(AsyncCallbackHandler):
-    """Custom callback for OSA to track LangChain operations"""
+class MemCoreCallback(AsyncCallbackHandler):
+    """Custom callback for MemCore to track LangChain operations"""
     
     def __init__(self, action_hooks=None):
         self.action_hooks = action_hooks
@@ -59,14 +60,14 @@ class OSACallback(AsyncCallbackHandler):
     
     async def on_llm_start(self, serialized: Dict[str, Any], prompts: List[str], **kwargs):
         """Called when LLM starts running."""
-        self.start_time = datetime.now()
+        self.start_time = pendulum.now()
         if self.action_hooks:
             await self.action_hooks.skill_learned("LLM Processing", "langchain_operation")
     
     async def on_llm_end(self, response, **kwargs):
         """Called when LLM ends running."""
         if self.start_time:
-            duration = (datetime.now() - self.start_time).total_seconds()
+            duration = (pendulum.now() - self.start_time).total_seconds()
             self.operations.append({"type": "llm", "duration": duration})
     
     async def on_chain_start(self, serialized: Dict[str, Any], inputs: Dict[str, Any], **kwargs):
@@ -81,7 +82,7 @@ class OSACallback(AsyncCallbackHandler):
 
 
 class LangChainEngine:
-    """LangChain-powered intelligence engine for OSA"""
+    """LangChain-powered intelligence engine for MemCore"""
     
     def __init__(self, config: Optional[Dict[str, Any]] = None):
         self.config = config or {}
@@ -102,7 +103,7 @@ class LangChainEngine:
     
     def set_action_hooks(self, action_hooks):
         """Set action hooks for learning tracking"""
-        self.callback = OSACallback(action_hooks)
+        self.callback = MemCoreCallback(action_hooks)
     
     def _load_api_keys(self) -> Dict[str, str]:
         """Load API keys from environment"""
@@ -244,7 +245,7 @@ class LangChainEngine:
         # Create a custom prompt for reasoning
         reasoning_prompt = PromptTemplate(
             input_variables=["input", "chat_history"],
-            template="""You are OSA, an advanced AI assistant with deep reasoning capabilities.
+            template="""You are MemCore, an advanced AI assistant with deep reasoning capabilities.
 
 Previous conversation:
 {chat_history}
@@ -324,7 +325,7 @@ Response:"""
     
     def _get_code_agent_prompt(self) -> str:
         """Get the prompt template for the code agent"""
-        return """You are OSA's specialized code agent. You excel at:
+        return """You are MemCore's specialized code agent. You excel at:
 - Understanding and analyzing code
 - Generating high-quality code solutions
 - Debugging and fixing issues
@@ -398,7 +399,7 @@ Question: {input}
     
     async def query_with_memory(self, query: str, task_type: str = "general") -> Tuple[str, Dict[str, Any]]:
         """Query with persistent memory using the best approach"""
-        metadata = {"timestamp": datetime.now().isoformat(), "task_type": task_type}
+        metadata = {"timestamp": pendulum.now().isoformat(), "task_type": task_type}
         
         try:
             # Select the best chain or agent for the task

@@ -1,11 +1,12 @@
+import pendulum
+import orjson
 #!/usr/bin/env python3
 """
-OSA Autonomous Intelligence System
+MemCore Autonomous Intelligence System
 Automatically determines intent and chooses appropriate actions
 """
 
 import asyncio
-import json
 import logging
 import re
 import subprocess
@@ -20,18 +21,20 @@ except ImportError:
     print("Warning: ollama package not installed. Install with: pip install ollama")
     ollama = None
 
-from .logger import setup_logger
+from loguru import logger
 from .langchain_engine import get_langchain_engine, LANGCHAIN_AVAILABLE
 from .self_learning import get_learning_system, LearningDomain, FeedbackType
 from .task_planner import get_task_planner, TaskType, TaskPriority
 from .mcp_client import get_mcp_client
 from .code_generator import get_code_generator, CodeGenerationRequest, CodeType, ProgrammingLanguage
-from .agent_orchestrator import get_agent_orchestrator, AgentType, CollaborationMode
+from .orchestrator_adapter import get_osa_orchestrator, AgentType, CollaborationMode
 from .memory_adapter import get_persistent_memory, MemoryType, MemoryPriority
+from ..agents.open_source_extractor_agent import get_open_source_extractor
+from ..agents.open_source_solution_finder import get_solution_finder
 
 
 class IntentType(Enum):
-    """Types of user intents OSA can detect"""
+    """Types of user intents MemCore can detect"""
     CODE_GENERATION = "code_generation"
     CODE_DEBUG = "code_debug"
     CODE_REFACTOR = "code_refactor"
@@ -45,20 +48,20 @@ class IntentType(Enum):
     SYSTEM_TASK = "system_task"
 
 
-class OSAAutonomous:
+class MemCoreAutonomous:
     """
-    Autonomous OSA that automatically determines what to do
+    Autonomous MemCore that automatically determines what to do
     based on user input without manual mode switching.
     """
     
     def __init__(self, config: Optional[Dict[str, Any]] = None):
-        """Initialize autonomous OSA."""
+        """Initialize autonomous MemCore."""
         self.config = config or {}
         self.model = self.config.get("model", "llama3.2:3b")
         self.verbose = self.config.get("verbose", False)
         
         # Setup logger
-        self.logger = setup_logger("OSA-Auto", level="DEBUG" if self.verbose else "INFO")
+        self.logger = setup_logger("MemCore-Auto", level="DEBUG" if self.verbose else "INFO")
         
         # Initialize LangChain engine for advanced reasoning
         self.langchain_engine = None
@@ -104,7 +107,7 @@ class OSAAutonomous:
         # Initialize multi-agent orchestrator
         self.agent_orchestrator = None
         try:
-            self.agent_orchestrator = get_agent_orchestrator(self.langchain_engine, config)
+            self.agent_orchestrator = get_osa_orchestrator(self.langchain_engine, config)
             self.logger.info("Multi-agent orchestrator initialized")
         except Exception as e:
             self.logger.error(f"Failed to initialize agent orchestrator: {e}")
@@ -123,6 +126,29 @@ class OSAAutonomous:
                 self.logger.info(f"Loaded {len(context['skills'])} learned skills")
         except Exception as e:
             self.logger.error(f"Failed to initialize persistent memory: {e}")
+        
+        # Initialize Open Source Extractor Agent
+        self.open_source_extractor = None
+        try:
+            self.open_source_extractor = get_open_source_extractor(config)
+            self.logger.info("Open Source Extractor Agent initialized")
+            
+            # Start continuous scanning in background
+            import asyncio
+            asyncio.create_task(self.open_source_extractor.run_continuous_scan())
+            self.logger.info("Started continuous open source scanning")
+        except Exception as e:
+            self.logger.error(f"Failed to initialize Open Source Extractor: {e}")
+        
+        # Initialize Open Source Solution Finder
+        # This is called BEFORE writing any custom code
+        self.solution_finder = None
+        try:
+            self.solution_finder = get_solution_finder(config)
+            self.logger.info("Open Source Solution Finder initialized")
+            self.logger.info("🎯 Will check for existing solutions before writing custom code")
+        except Exception as e:
+            self.logger.error(f"Failed to initialize Solution Finder: {e}")
         
         # Initialize Ollama client (fallback)
         self.client = None
@@ -196,11 +222,11 @@ class OSAAutonomous:
             ]
         }
         
-        self.logger.info("OSA Autonomous system initialized")
+        self.logger.info("MemCore Autonomous system initialized")
     
     async def initialize(self):
-        """Initialize OSA systems."""
-        self.logger.info("🚀 Starting OSA Autonomous systems...")
+        """Initialize MemCore systems."""
+        self.logger.info("🚀 Starting MemCore Autonomous systems...")
         
         # Load critical context from persistent memory
         if self.persistent_memory:
@@ -261,7 +287,7 @@ class OSAAutonomous:
             except Exception as e:
                 self.logger.error(f"Failed to start MCP servers: {e}")
         
-        self.logger.info("✅ OSA Autonomous ready!")
+        self.logger.info("✅ MemCore Autonomous ready!")
     
     def detect_intent(self, user_input: str) -> Tuple[IntentType, float]:
         """
@@ -306,7 +332,7 @@ class OSAAutonomous:
         return emoji_map.get(intent, "🤖")
     
     def _map_intent_to_task_type(self, intent: IntentType) -> str:
-        """Map OSA intent to LangChain task type"""
+        """Map MemCore intent to LangChain task type"""
         intent_mapping = {
             IntentType.CODE_GENERATION: "coding",
             IntentType.CODE_DEBUG: "coding", 
@@ -323,7 +349,7 @@ class OSAAutonomous:
         return intent_mapping.get(intent, "general")
     
     def _map_intent_to_learning_domain(self, intent: IntentType) -> LearningDomain:
-        """Map OSA intent to learning domain"""
+        """Map MemCore intent to learning domain"""
         mapping = {
             IntentType.CODE_GENERATION: LearningDomain.CODING,
             IntentType.CODE_DEBUG: LearningDomain.CODING,
@@ -340,7 +366,7 @@ class OSAAutonomous:
         return mapping.get(intent, LearningDomain.CONVERSATION)
     
     def _map_intent_to_task_type_planner(self, intent: IntentType) -> TaskType:
-        """Map OSA intent to task planner type"""
+        """Map MemCore intent to task planner type"""
         mapping = {
             IntentType.CODE_GENERATION: TaskType.CODING,
             IntentType.CODE_DEBUG: TaskType.CODING,
@@ -430,7 +456,7 @@ class OSAAutonomous:
         self.conversation_context.append({
             "input": user_input,
             "intent": intent.value,
-            "timestamp": datetime.now().isoformat()
+            "timestamp": pendulum.now().isoformat()
         })
         
         # Store in persistent memory
@@ -714,7 +740,7 @@ Structure:
         self.learning_memory.append({
             "topic": user_input,
             "lesson": response[:500],
-            "timestamp": datetime.now().isoformat()
+            "timestamp": pendulum.now().isoformat()
         })
         
         return response
@@ -791,7 +817,7 @@ Provide:
     async def _generate_response(self, prompt: str) -> str:
         """Generate response using Ollama."""
         if not self.client:
-            return "OSA is running in simulation mode (Ollama not connected)"
+            return "MemCore is running in simulation mode (Ollama not connected)"
         
         try:
             # Add context from previous conversations
@@ -868,7 +894,7 @@ Lesson: Successfully handled {intent.value} request"""
         return "\n\n".join(thoughts)
     
     def get_status(self) -> Dict[str, Any]:
-        """Get current OSA status."""
+        """Get current MemCore status."""
         status = {
             'model': self.model,
             'conversations': len(self.conversation_context),
@@ -934,8 +960,8 @@ Lesson: Successfully handled {intent.value} request"""
         return status
     
     async def shutdown(self):
-        """Shutdown OSA gracefully."""
-        self.logger.info("Shutting down OSA Autonomous...")
+        """Shutdown MemCore gracefully."""
+        self.logger.info("Shutting down MemCore Autonomous...")
         
         # Shutdown LangChain systems
         if self.langchain_engine:
@@ -954,4 +980,4 @@ Lesson: Successfully handled {intent.value} request"""
                 self.logger.error(f"Error stopping MCP servers: {e}")
         
         # Could save state here if needed
-        self.logger.info("✓ OSA Autonomous shutdown complete")
+        self.logger.info("✓ MemCore Autonomous shutdown complete")

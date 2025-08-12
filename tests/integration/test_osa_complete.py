@@ -1,19 +1,19 @@
+import orjson
 """
-Integration tests for the complete OSA system.
+Integration tests for the complete MemCore system.
 """
 
 import pytest
 import asyncio
-import json
 from unittest.mock import AsyncMock, Mock, patch
 from typing import Dict, Any, List
 
-# Mock the complete OSA system for testing
+# Mock the complete MemCore system for testing
 try:
-    from src.osa_complete_final import create_complete_osa, OSACompleteFinal
+    from src.osa_complete_final import create_complete_osa, MemCoreCompleteFinal
 except ImportError:
     # Mock implementation for testing
-    class OSACompleteFinal:
+    class MemCoreCompleteFinal:
         def __init__(self, max_instances: int = 10, **config):
             self.max_instances = max_instances
             self.config = config
@@ -23,7 +23,7 @@ except ImportError:
             self.is_initialized = False
             
         async def initialize(self):
-            """Initialize OSA system."""
+            """Initialize MemCore system."""
             self.is_initialized = True
             # Mock Claude instances
             self.claude_instances = [Mock() for _ in range(self.max_instances)]
@@ -116,19 +116,19 @@ except ImportError:
             self.claude_instances = []
             self.is_initialized = False
     
-    async def create_complete_osa(**config) -> OSACompleteFinal:
-        """Factory function to create OSA instance."""
-        osa = OSACompleteFinal(**config)
+    async def create_complete_osa(**config) -> MemCoreCompleteFinal:
+        """Factory function to create MemCore instance."""
+        osa = MemCoreCompleteFinal(**config)
         await osa.initialize()
         return osa
 
 
-class TestOSAInitialization:
-    """Test OSA system initialization."""
+class TestMemCoreInitialization:
+    """Test MemCore system initialization."""
     
     @pytest.mark.asyncio
     async def test_create_osa_with_defaults(self):
-        """Test creating OSA with default configuration."""
+        """Test creating MemCore with default configuration."""
         osa = await create_complete_osa()
         
         assert osa is not None
@@ -138,7 +138,7 @@ class TestOSAInitialization:
     
     @pytest.mark.asyncio
     async def test_create_osa_with_custom_config(self):
-        """Test creating OSA with custom configuration."""
+        """Test creating MemCore with custom configuration."""
         config = {
             "max_instances": 5,
             "enable_learning": True,
@@ -154,7 +154,7 @@ class TestOSAInitialization:
     
     @pytest.mark.asyncio
     async def test_osa_cleanup(self):
-        """Test OSA resource cleanup."""
+        """Test MemCore resource cleanup."""
         osa = await create_complete_osa()
         
         assert osa.is_initialized is True
@@ -165,12 +165,12 @@ class TestOSAInitialization:
         assert len(osa.claude_instances) == 0
 
 
-class TestOSABasicOperations:
-    """Test basic OSA operations."""
+class TestMemCoreBasicOperations:
+    """Test basic MemCore operations."""
     
     @pytest.fixture
     async def osa_instance(self):
-        """Create OSA instance for testing."""
+        """Create MemCore instance for testing."""
         osa = await create_complete_osa(max_instances=3)
         yield osa
         await osa.cleanup()
@@ -221,8 +221,8 @@ class TestOSABasicOperations:
         assert result["execution_time"] > 50  # Should take longer due to length
 
 
-class TestOSAProblemSolving:
-    """Test OSA problem-solving capabilities."""
+class TestMemCoreProblemSolving:
+    """Test MemCore problem-solving capabilities."""
     
     @pytest.fixture
     async def osa_instance(self):
@@ -280,8 +280,8 @@ class TestOSAProblemSolving:
         assert len(unique_descriptions) == len(descriptions)  # All should be unique
 
 
-class TestOSAProjectLeadership:
-    """Test OSA project leadership capabilities."""
+class TestMemCoreProjectLeadership:
+    """Test MemCore project leadership capabilities."""
     
     @pytest.fixture
     async def osa_instance(self):
@@ -361,8 +361,8 @@ class TestOSAProjectLeadership:
         assert any(role in expected_roles for role in roles)
 
 
-class TestOSAIntegration:
-    """Integration tests for OSA components working together."""
+class TestMemCoreIntegration:
+    """Integration tests for MemCore components working together."""
     
     @pytest.fixture
     async def osa_instance(self):
@@ -452,7 +452,7 @@ class TestOSAIntegration:
     
     @pytest.mark.asyncio
     async def test_concurrent_operations(self, osa_instance):
-        """Test that OSA can handle concurrent operations."""
+        """Test that MemCore can handle concurrent operations."""
         # Run multiple operations concurrently
         tasks = [
             osa_instance.think_and_accomplish("Build user authentication"),
@@ -475,18 +475,18 @@ class TestOSAIntegration:
     
     @pytest.mark.asyncio
     async def test_error_recovery(self, osa_instance):
-        """Test OSA's ability to recover from errors."""
+        """Test MemCore's ability to recover from errors."""
         # Simulate a task that might cause issues
         problematic_task = "Implement quantum computer using only JavaScript"
         
-        # OSA should handle even unrealistic tasks gracefully
+        # MemCore should handle even unrealistic tasks gracefully
         result = await osa_instance.think_and_accomplish(problematic_task)
         
         # Should not crash and should provide some response
         assert result is not None
         assert "success" in result
         
-        # Even if the task is impossible, OSA should still think about it
+        # Even if the task is impossible, MemCore should still think about it
         if result["success"]:
             assert result["thinking_insights"]["total_thoughts"] > 0
     
@@ -513,8 +513,8 @@ class TestOSAIntegration:
         # should be faster or show improved metrics
 
 
-class TestOSAPerformance:
-    """Performance tests for OSA integration."""
+class TestMemCorePerformance:
+    """Performance tests for MemCore integration."""
     
     @pytest.fixture
     async def osa_instance(self):
@@ -583,8 +583,8 @@ class TestOSAPerformance:
         assert memory_growth < 100 * 1024 * 1024  # 100MB limit
 
 
-class TestOSAErrorHandling:
-    """Test error handling in OSA integration."""
+class TestMemCoreErrorHandling:
+    """Test error handling in MemCore integration."""
     
     @pytest.fixture
     async def osa_instance(self):
@@ -606,7 +606,7 @@ class TestOSAErrorHandling:
         
         for malformed_input in malformed_inputs:
             try:
-                # OSA should handle malformed input gracefully
+                # MemCore should handle malformed input gracefully
                 if malformed_input is not None:
                     result = await osa_instance.think_and_accomplish(str(malformed_input))
                     # Should not crash

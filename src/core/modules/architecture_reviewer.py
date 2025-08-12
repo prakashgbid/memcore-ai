@@ -1,8 +1,10 @@
+import pendulum
+import orjson
 #!/usr/bin/env python3
 """
-OSA Daily Architecture Self-Review System
+MemCore Daily Architecture Self-Review System
 
-This component enables OSA to:
+This component enables MemCore to:
 1. Daily review its own architecture
 2. Research latest tools and patterns
 3. Compare with industry best practices
@@ -17,7 +19,6 @@ Core Philosophy:
 """
 
 import asyncio
-import json
 import hashlib
 from typing import Dict, List, Optional, Any, Tuple
 from datetime import datetime, timedelta, time
@@ -48,7 +49,7 @@ class ReviewCategory(Enum):
 
 @dataclass
 class ArchitectureComponent:
-    """Represents a component in OSA's architecture"""
+    """Represents a component in MemCore's architecture"""
     name: str
     category: str
     current_version: str
@@ -61,7 +62,7 @@ class ArchitectureComponent:
     
     def needs_review(self) -> bool:
         """Check if component needs review"""
-        days_since_review = (datetime.now() - self.last_reviewed).days
+        days_since_review = (pendulum.now() - self.last_reviewed).days
         return days_since_review > 7 or self.performance_score < 0.7
 
 
@@ -100,7 +101,7 @@ class ArchitectureReview:
 
 class DailyArchitectureReviewer:
     """
-    OSA's self-improvement system that:
+    MemCore's self-improvement system that:
     - Reviews architecture daily
     - Researches better tools
     - Implements improvements
@@ -200,7 +201,7 @@ class DailyArchitectureReviewer:
         }
         
         # Setup logging
-        self.logger = logging.getLogger('OSA-ArchitectureReview')
+        self.logger = logging.getLogger('MemCore-ArchitectureReview')
         
         # Initialize components
         self._initialize_architecture()
@@ -215,7 +216,7 @@ class DailyArchitectureReviewer:
                 current_version='latest',
                 current_tool=config['current'],
                 purpose=category.replace('_', ' '),
-                last_reviewed=datetime.now() - timedelta(days=8),  # Force initial review
+                last_reviewed=pendulum.now() - timedelta(days=8),  # Force initial review
                 performance_score=0.8,
                 alternatives=[{'name': alt} for alt in config['alternatives']]
             )
@@ -225,14 +226,14 @@ class DailyArchitectureReviewer:
         """
         Perform comprehensive daily architecture review.
         
-        This is OSA's self-improvement routine.
+        This is MemCore's self-improvement routine.
         """
         
         self.logger.info("🔍 Starting daily architecture review...")
         
         review = ArchitectureReview(
-            id=hashlib.md5(f"review_{datetime.now()}".encode()).hexdigest()[:8],
-            timestamp=datetime.now(),
+            id=hashlib.md5(f"review_{pendulum.now()}".encode()).hexdigest()[:8],
+            timestamp=pendulum.now(),
             components_reviewed=[],
             improvements_found=[],
             tools_to_replace={},
@@ -292,7 +293,7 @@ class DailyArchitectureReviewer:
         
         # Store review
         self.reviews.append(review)
-        self.review_schedule['last_review'] = datetime.now()
+        self.review_schedule['last_review'] = pendulum.now()
         
         # Generate summary
         self.logger.info(f"✅ Review complete:")
@@ -339,7 +340,7 @@ class DailyArchitectureReviewer:
                 improvement['reasons'] = alt_eval.pros[:3]
         
         # Update component
-        component.last_reviewed = datetime.now()
+        component.last_reviewed = pendulum.now()
         component.performance_score = current_eval.score
         
         return improvement if improvement.get('replacement') or improvement['issues'] else None
@@ -372,7 +373,7 @@ class DailyArchitectureReviewer:
         # 2. Maintenance
         last_commit = tool_info.get('last_commit')
         if last_commit:
-            days_since = (datetime.now() - last_commit).days
+            days_since = (pendulum.now() - last_commit).days
             if days_since < 7:
                 evaluation.pros.append('Actively maintained')
                 evaluation.score += 0.15
@@ -433,42 +434,42 @@ class DailyArchitectureReviewer:
         known_tools = {
             'FastAPI': {
                 'github_stars': 65000,
-                'last_commit': datetime.now() - timedelta(days=1),
+                'last_commit': pendulum.now() - timedelta(days=1),
                 'documentation_quality': 'excellent',
                 'learning_curve': 'moderate',
                 'integrations': 50
             },
             'Next.js': {
                 'github_stars': 115000,
-                'last_commit': datetime.now() - timedelta(hours=6),
+                'last_commit': pendulum.now() - timedelta(hours=6),
                 'documentation_quality': 'excellent',
                 'learning_curve': 'moderate',
                 'integrations': 100
             },
             'Supabase': {
                 'github_stars': 60000,
-                'last_commit': datetime.now() - timedelta(hours=12),
+                'last_commit': pendulum.now() - timedelta(hours=12),
                 'documentation_quality': 'good',
                 'learning_curve': 'easy',
                 'integrations': 30
             },
             'Vercel': {
                 'github_stars': 12000,
-                'last_commit': datetime.now() - timedelta(days=2),
+                'last_commit': pendulum.now() - timedelta(days=2),
                 'documentation_quality': 'excellent',
                 'learning_curve': 'easy',
                 'integrations': 50
             },
             'Railway': {
                 'github_stars': 3000,
-                'last_commit': datetime.now() - timedelta(days=3),
+                'last_commit': pendulum.now() - timedelta(days=3),
                 'documentation_quality': 'good',
                 'learning_curve': 'easy',
                 'integrations': 25
             },
             'Clerk': {
                 'github_stars': 5000,
-                'last_commit': datetime.now() - timedelta(days=1),
+                'last_commit': pendulum.now() - timedelta(days=1),
                 'documentation_quality': 'excellent',
                 'learning_curve': 'easy',
                 'integrations': 20
@@ -478,7 +479,7 @@ class DailyArchitectureReviewer:
         # Return known data or defaults
         return known_tools.get(tool_name, {
             'github_stars': 1000,
-            'last_commit': datetime.now() - timedelta(days=30),
+            'last_commit': pendulum.now() - timedelta(days=30),
             'documentation_quality': 'unknown',
             'learning_curve': 'moderate',
             'integrations': 5
@@ -667,7 +668,7 @@ class DailyArchitectureReviewer:
         """
         Implement the improvements found in review.
         
-        This is where OSA actually updates itself.
+        This is where MemCore actually updates itself.
         """
         
         self.logger.info("🔧 Implementing architecture improvements...")
@@ -900,20 +901,20 @@ class DailyArchitectureReviewer:
         return matching_tools
 
 
-# Integration function for OSA
+# Integration function for MemCore
 async def enhance_osa_with_architecture_review(osa_instance):
-    """Enhance OSA with daily architecture review"""
+    """Enhance MemCore with daily architecture review"""
     
     reviewer = DailyArchitectureReviewer()
     
-    # Add reviewer to OSA
+    # Add reviewer to MemCore
     osa_instance.architecture_reviewer = reviewer
     
     # Schedule daily review
     async def daily_review_task():
         while True:
             # Wait until review time (2 AM)
-            now = datetime.now()
+            now = pendulum.now()
             review_time = datetime.combine(now.date(), reviewer.review_schedule['daily'])
             
             if now > review_time:
@@ -937,7 +938,7 @@ async def enhance_osa_with_architecture_review(osa_instance):
     # Start daily review task
     asyncio.create_task(daily_review_task())
     
-    # Override OSA accomplish method to use best tools
+    # Override MemCore accomplish method to use best tools
     original_accomplish = osa_instance.accomplish
     
     async def enhanced_accomplish(goal: str) -> Dict[str, Any]:

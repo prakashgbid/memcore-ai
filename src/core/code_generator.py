@@ -1,14 +1,15 @@
+import orjson
 #!/usr/bin/env python3
 """
-OSA Code Generation and Self-Modification System
+MemCore Code Generation and Self-Modification System
 Enables autonomous code generation, modification, and self-improvement
+NOW WITH: Open source solution checking BEFORE writing custom code
 """
 
 import ast
 import re
 import subprocess
 import tempfile
-import json
 import asyncio
 from typing import Dict, Any, Optional, List, Tuple
 from pathlib import Path
@@ -17,6 +18,19 @@ from enum import Enum
 import logging
 import black
 import autopep8
+
+# Import solution finder to check for existing solutions FIRST
+try:
+    from ..agents.open_source_solution_finder import (
+        get_solution_finder,
+        check_before_coding,
+        RequirementSpec,
+        SolutionLevel
+    )
+    SOLUTION_FINDER_AVAILABLE = True
+except ImportError:
+    SOLUTION_FINDER_AVAILABLE = False
+    print("Warning: Open Source Solution Finder not available")
 
 
 class CodeType(Enum):
@@ -79,12 +93,12 @@ class GeneratedCode:
 
 
 class CodeGenerator:
-    """Advanced code generation system for OSA"""
+    """Advanced code generation system for MemCore"""
     
     def __init__(self, langchain_engine=None, config: Dict[str, Any] = None):
         self.config = config or {}
         self.langchain_engine = langchain_engine
-        self.logger = logging.getLogger("OSA-CodeGen")
+        self.logger = logging.getLogger("MemCore-CodeGen")
         
         # Code templates library
         self.templates = self._initialize_templates()
@@ -178,6 +192,19 @@ class CodeGenerator:
     async def generate_code(self, request: CodeGenerationRequest) -> GeneratedCode:
         """Generate code based on request"""
         self.logger.info(f"Generating {request.code_type.value} in {request.language.value}")
+        
+        # CRITICAL: Check for open source solutions BEFORE writing custom code
+        if SOLUTION_FINDER_AVAILABLE:
+            solution_check = await self._check_for_existing_solution(request)
+            
+            if solution_check["should_use_library"]:
+                self.logger.info(f"🎯 Found open source solution: {solution_check['recommendation']}")
+                
+                # Generate code that uses the library instead of custom implementation
+                return await self._generate_library_usage_code(request, solution_check)
+        
+        # No suitable library found, proceed with custom code generation
+        self.logger.info("No suitable open source solution found, generating custom code")
         
         # Use LangChain for intelligent code generation
         if self.langchain_engine:
@@ -437,7 +464,7 @@ Include:
         return variables
     
     async def self_modify(self, target_file: str, modification_request: str) -> bool:
-        """Self-modify OSA's own code"""
+        """Self-modify MemCore's own code"""
         self.logger.warning(f"Self-modification requested for {target_file}")
         
         # Safety checks
@@ -487,7 +514,7 @@ Include:
     
     def _is_safe_to_modify(self, target_file: str) -> bool:
         """Check if file is safe to modify"""
-        # Only allow modification of OSA files
+        # Only allow modification of MemCore files
         safe_patterns = [
             "osa_*.py",
             "src/core/*.py",
@@ -610,6 +637,111 @@ Generate refactored version:
     def get_modification_history(self) -> List[Dict[str, Any]]:
         """Get history of self-modifications"""
         return self.modification_history.copy()
+    
+    async def _check_for_existing_solution(self, request: CodeGenerationRequest) -> Dict[str, Any]:
+        """Check if there's an open source solution before writing custom code"""
+        if not SOLUTION_FINDER_AVAILABLE:
+            return {"should_use_library": False}
+        
+        # Determine solution level based on code type
+        level_map = {
+            CodeType.FUNCTION: SolutionLevel.FUNCTION,
+            CodeType.CLASS: SolutionLevel.MODULE,
+            CodeType.MODULE: SolutionLevel.PACKAGE,
+            CodeType.SCRIPT: SolutionLevel.PACKAGE,
+        }
+        
+        level = level_map.get(request.code_type, SolutionLevel.FUNCTION)
+        
+        # Check for existing solutions
+        result = await check_before_coding(
+            description=request.description,
+            level=level,
+            features=request.requirements,
+            constraints=request.constraints
+        )
+        
+        return result
+    
+    async def _generate_library_usage_code(
+        self,
+        request: CodeGenerationRequest,
+        solution_check: Dict[str, Any]
+    ) -> GeneratedCode:
+        """Generate code that uses an open source library instead of custom implementation"""
+        best_solution = solution_check["solutions"][0] if solution_check["solutions"] else None
+        
+        if not best_solution:
+            # Fallback to custom generation
+            return await self._generate_with_langchain(request)
+        
+        # Generate code that uses the library
+        library_code = f"""
+# Using {best_solution.name} library instead of custom implementation
+# {best_solution.description}
+# Installation: {best_solution.installation}
+
+{solution_check.get('code_example', '')}
+
+# Implementation using {best_solution.name}:
+"""
+        
+        if self.langchain_engine:
+            # Generate implementation using the library
+            prompt = f"""Generate {request.language.value} code that uses the '{best_solution.name}' library
+to implement: {request.description}
+
+The library provides: {best_solution.description}
+Installation: {best_solution.installation}
+
+Generate clean, production-ready code that properly uses this library:
+"""
+            
+            response, _ = await self.langchain_engine.query_with_memory(prompt, "coding")
+            implementation = self._extract_code_from_response(response, request.language)
+            
+            library_code += implementation
+        else:
+            library_code += f"""
+import {best_solution.name}
+
+# TODO: Implement using {best_solution.name}
+# See documentation: {best_solution.url}
+"""
+        
+        # Format the code
+        if request.language in self.formatters:
+            library_code = self.formatters[request.language](library_code)
+        
+        # Create documentation about using the library
+        documentation = f"""
+## Implementation using {best_solution.name}
+
+This implementation uses the open source library '{best_solution.name}' instead of custom code.
+
+### Why use this library?
+{', '.join(best_solution.pros) if hasattr(best_solution, 'pros') else 'Well-maintained, tested solution'}
+
+### Installation
+```bash
+{best_solution.installation}
+```
+
+### Documentation
+{best_solution.url}
+
+### Match Score
+{best_solution.match_score:.2f} - {solution_check['recommendation']}
+"""
+        
+        return GeneratedCode(
+            code=library_code,
+            language=request.language,
+            description=f"Implementation using {best_solution.name}: {request.description}",
+            tests=None,  # Library should have its own tests
+            documentation=documentation,
+            quality_score=0.9  # High quality due to using established library
+        )
     
     def rollback_modification(self, file_path: str) -> bool:
         """Rollback a self-modification"""

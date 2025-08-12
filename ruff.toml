@@ -1,0 +1,42 @@
+# Ruff configuration for OSA project
+# Ruff is 10-100x faster than flake8+black
+
+# Enable all rules by default
+select = ["ALL"]
+
+# But disable some that are too strict for now
+ignore = [
+    "D",        # pydocstyle - we'll enable this later
+    "ANN",      # annotations - we'll add types gradually
+    "COM812",   # trailing comma - conflicts with black
+    "ISC001",   # implicit string concatenation
+    "Q",        # quotes - let black handle this
+    "FBT",      # boolean trap
+    "C90",      # complexity - we'll refactor later
+    "PLR",      # pylint refactor
+    "TD",       # todos
+    "FIX",      # fixme
+    "ERA",      # commented code
+    "ARG",      # unused arguments
+    "S",        # security - we'll review this
+]
+
+# Python version target
+target-version = "py38"
+
+# Line length (matching black)
+line-length = 100
+
+# Allow unused variables when prefixed with _
+[pydocstyle]
+convention = "google"
+
+# Configure imports
+[isort]
+known-first-party = ["src", "modules"]
+
+# Per-file ignores
+[per-file-ignores]
+"tests/*" = ["S101", "PLR2004", "D"]  # Allow asserts and magic numbers in tests
+"scripts/*" = ["T20", "D"]  # Allow print in scripts
+"examples/*" = ["T20", "D", "INP001"]  # Allow print and missing docstrings

@@ -1,6 +1,8 @@
+import pendulum
+import orjson
 #!/usr/bin/env python3
 """
-OSA Autonomous Task Decomposition and Planning System
+MemCore Autonomous Task Decomposition and Planning System
 Breaks down complex tasks into manageable steps and executes them autonomously
 """
 
@@ -79,18 +81,18 @@ class TaskStep:
     def mark_started(self):
         """Mark step as started"""
         self.status = TaskStatus.IN_PROGRESS
-        self.started_at = datetime.now()
+        self.started_at = pendulum.now()
     
     def mark_completed(self, result: Any = None):
         """Mark step as completed"""
         self.status = TaskStatus.COMPLETED
-        self.completed_at = datetime.now()
+        self.completed_at = pendulum.now()
         self.result = result
     
     def mark_failed(self, error: str):
         """Mark step as failed"""
         self.status = TaskStatus.FAILED
-        self.completed_at = datetime.now()
+        self.completed_at = pendulum.now()
         self.error = error
 
 
@@ -282,12 +284,12 @@ Plan:"""
                     response = await chain.arun(
                         task_description=task.description,
                         task_type=task.task_type.value,
-                        context=json.dumps(task.metadata)
+                        context=orjson.dumps(task.metadata).decode()
                     )
                     
                     # Parse JSON response
                     try:
-                        plan = json.loads(response)
+                        plan = orjson.loads(response)
                         if isinstance(plan, list) and plan:
                             return plan
                     except json.JSONDecodeError:
@@ -360,7 +362,7 @@ Plan:"""
     async def execute_task(self, task: Task) -> Dict[str, Any]:
         """Execute a task by running its steps"""
         task.status = TaskStatus.IN_PROGRESS
-        task.started_at = datetime.now()
+        task.started_at = pendulum.now()
         
         completed_steps = []
         results = {}
@@ -398,7 +400,7 @@ Plan:"""
         # Update task status
         if task.is_complete():
             task.status = TaskStatus.COMPLETED
-            task.completed_at = datetime.now()
+            task.completed_at = pendulum.now()
         
         return {
             "task_id": task.task_id,
@@ -454,7 +456,7 @@ Plan:"""
         if self.llm_engine:
             try:
                 response, _ = await self.llm_engine.query_with_memory(
-                    f"Research task: {step.description}\nContext: {json.dumps(task.metadata)}",
+                    f"Research task: {step.description}\nContext: {orjson.dumps(task.metadata).decode()}",
                     "reasoning"
                 )
                 return response

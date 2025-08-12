@@ -1,8 +1,10 @@
+import pendulum
+import orjson
 #!/usr/bin/env python3
 """
-OSA Continuous Thinking Engine
+MemCore Continuous Thinking Engine
 
-This component enables OSA to:
+This component enables MemCore to:
 1. Think continuously about thousands of aspects simultaneously
 2. Perform nested, deep reasoning like humans
 3. Maintain awareness of blockers, connections, and contexts
@@ -17,7 +19,6 @@ Core Philosophy:
 """
 
 import asyncio
-import json
 import hashlib
 from typing import Dict, List, Optional, Any, Set, Tuple
 from datetime import datetime, timedelta
@@ -32,7 +33,7 @@ import random
 
 
 class ThoughtType(Enum):
-    """Types of thoughts OSA can have"""
+    """Types of thoughts MemCore can have"""
     ANALYSIS = "analysis"
     PLANNING = "planning"
     PROBLEM_SOLVING = "problem_solving"
@@ -52,7 +53,7 @@ class ThoughtType(Enum):
 
 @dataclass
 class Thought:
-    """Represents a single thought in OSA's mind"""
+    """Represents a single thought in MemCore's mind"""
     id: str
     type: ThoughtType
     content: str
@@ -73,7 +74,7 @@ class Thought:
 
 @dataclass
 class Context:
-    """Represents a context or scope OSA is working within"""
+    """Represents a context or scope MemCore is working within"""
     id: str
     name: str
     description: str
@@ -126,7 +127,7 @@ class WorkItem:
 
 class ContinuousThinkingEngine:
     """
-    OSA's continuous thinking engine that enables human-like
+    MemCore's continuous thinking engine that enables human-like
     deep reasoning, multi-context awareness, and adaptive problem-solving.
     """
     
@@ -176,7 +177,7 @@ class ContinuousThinkingEngine:
         }
         
         # Setup logging
-        self.logger = logging.getLogger('OSA-Thinking')
+        self.logger = logging.getLogger('MemCore-Thinking')
         
         # Start continuous thinking loop
         self._start_thinking_loop()
@@ -229,7 +230,7 @@ class ContinuousThinkingEngine:
         
         # Create reasoning chain
         chain = ReasoningChain(
-            id=hashlib.md5(f"{topic}{datetime.now()}".encode()).hexdigest()[:8],
+            id=hashlib.md5(f"{topic}{pendulum.now()}".encode()).hexdigest()[:8],
             root_thought=root_thought.id,
             thoughts=[root_thought.id]
         )
@@ -312,7 +313,7 @@ class ContinuousThinkingEngine:
         """Create a new thought"""
         
         thought = Thought(
-            id=hashlib.md5(f"{content}{datetime.now()}".encode()).hexdigest()[:8],
+            id=hashlib.md5(f"{content}{pendulum.now()}".encode()).hexdigest()[:8],
             type=type,
             content=content,
             context=context,
@@ -342,7 +343,7 @@ class ContinuousThinkingEngine:
         """Create a new context"""
         
         context = Context(
-            id=hashlib.md5(f"{name}{datetime.now()}".encode()).hexdigest()[:8],
+            id=hashlib.md5(f"{name}{pendulum.now()}".encode()).hexdigest()[:8],
             name=name,
             description=f"Context for {name}",
             parent_context=parent
@@ -491,7 +492,7 @@ class ContinuousThinkingEngine:
     ) -> Dict[str, Any]:
         """
         Lead a complex task by breaking it down and delegating.
-        This implements OSA's leadership capabilities.
+        This implements MemCore's leadership capabilities.
         """
         
         self.logger.info(f"👔 Leading task: {task}")
@@ -745,7 +746,7 @@ class ContinuousThinkingEngine:
                         self.current_context_stack.append(sibling_id)
                         
                         self.context_switches.append(
-                            (from_context.id, sibling_id, datetime.now())
+                            (from_context.id, sibling_id, pendulum.now())
                         )
                         
                         self.logger.info(f"🔄 Context switch: {from_context.name} → {sibling.name}")
@@ -838,16 +839,16 @@ class ContinuousThinkingEngine:
         return viz
 
 
-# Integration function for OSA
+# Integration function for MemCore
 async def enhance_osa_with_thinking(osa_instance):
-    """Enhance OSA with continuous thinking capabilities"""
+    """Enhance MemCore with continuous thinking capabilities"""
     
     thinking_engine = ContinuousThinkingEngine()
     
-    # Add thinking engine to OSA
+    # Add thinking engine to MemCore
     osa_instance.thinking_engine = thinking_engine
     
-    # Override OSA accomplish to include deep thinking
+    # Override MemCore accomplish to include deep thinking
     original_accomplish = osa_instance.accomplish
     
     async def thinking_accomplish(goal: str) -> Dict[str, Any]:
@@ -896,12 +897,12 @@ async def enhance_osa_with_thinking(osa_instance):
     
     # Add method for continuous thinking
     async def continuous_think(topic: str, duration_seconds: int = 60):
-        """Let OSA think continuously about a topic"""
+        """Let MemCore think continuously about a topic"""
         
-        start_time = datetime.now()
+        start_time = pendulum.now()
         thoughts_generated = []
         
-        while (datetime.now() - start_time).seconds < duration_seconds:
+        while (pendulum.now() - start_time).seconds < duration_seconds:
             # Generate different types of thoughts
             for thought_type in [
                 ThoughtType.ANALYSIS,

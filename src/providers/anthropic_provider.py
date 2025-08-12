@@ -1,3 +1,4 @@
+import orjson
 """
 Anthropic Provider
 
@@ -8,7 +9,6 @@ import os
 import time
 from typing import Dict, List, Optional, Any
 import aiohttp
-import json
 
 from .base import BaseProvider, ProviderResponse
 
