@@ -1,3 +1,6 @@
 # Core API Reference
 
-::: persistent_ai_memory.core
+::: memcore.core
+    options:
+      show_source: true
+      show_bases: true
